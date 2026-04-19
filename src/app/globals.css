@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
+/* ── Fonts ── */
+@font-face {
+  font-family: 'AlphaLyrae-Medium';
+  src: url('/fonts/AlphaLyraeMedium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GeistPixel-Square';
+  src: url('/fonts/GeistPixelSquare.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Design System Tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand */
+  --color-brand-red: #F01C26;
+  --color-brand-yellow: #F7ED12;
+  --color-brand-orange: #F7941C;
+  --color-brand-green: #6BBD40;
+
+  /* Neutrals */
+  --color-neutral-light: #FFFFFF;
+  --color-neutral-1: #F2F2F2;
+  --color-neutral-2: #E8E8E8;
+  --color-neutral-3: #DDDDDD;
+  --color-neutral-4: #CACACA;
+  --color-neutral-5: #999999;
+  --color-neutral-6: #808080;
+  --color-neutral-7: #7A7A7A;
+  --color-neutral-8: #555555;
+  --color-neutral-9: #484848;
+  --color-neutral-10: #444444;
+  --color-neutral-11: #333333;
+  --color-neutral-12: #222222;
+  --color-neutral-dark: #101010;
+
+  /* Spacing */
+  --spacing-base: 8px;
+  --spacing-section: 96px;
+  --spacing-margin: 360px;
+  --spacing-card-gap: 72px;
+
+  /* Typography */
+  --font-heading: 'AlphaLyrae-Medium', 'Alpha Lyrae', system-ui, sans-serif;
+  --font-body: 'GeistPixel-Square', 'Geist Pixel', system-ui, sans-serif;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Animations ── */
+@keyframes arrowBounce {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(4px); }
+  75%  { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.arrow-bounce {
+  animation: arrowBounce 0.6s var(--ease-out) infinite;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: #FFCCCC;
+  color: var(--color-brand-red);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-neutral-light);
+  color: var(--color-neutral-dark);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
 }
