@@ -108,13 +108,13 @@ export default function CircularSelector() {
     osc.stop(now + 0.04);
   };
 
-  const onPointerDown = (e: React.PointerEvent<HTMLElement>) => {
+  const onPointerDown = (e: React.PointerEvent<Element>) => {
     e.currentTarget.setPointerCapture?.(e.pointerId);
     dragStartYRef.current = e.clientY;
     prevLiveCenterRef.current = activeIdx;
     setIsDragging(true);
   };
-  const onPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+  const onPointerMove = (e: React.PointerEvent<Element>) => {
     if (dragStartYRef.current === null) return;
     const dy = e.clientY - dragStartYRef.current;
     const newShift = dy / STEP_PX;
@@ -126,7 +126,7 @@ export default function CircularSelector() {
       playTick();
     }
   };
-  const onPointerUp = (e: React.PointerEvent<HTMLElement>) => {
+  const onPointerUp = (e: React.PointerEvent<Element>) => {
     if (dragStartYRef.current === null) return;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
     const next = mod(activeIdx - Math.round(dragShift), N);
