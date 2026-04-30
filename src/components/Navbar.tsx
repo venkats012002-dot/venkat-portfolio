@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import RubiksCube from "./RubiksCube";
+import { openControlCenter } from "@/hooks/useControlCenter";
+import { useHoverLift } from "@/hooks/useHoverLift";
 
 const NAV_LINKS = [
-  { label: "Work", href: "/work" },
+  { label: "Work", href: "/#keyprojects" },
   { label: "Explorations", href: "/explorations" },
   { label: "Sides", href: "/sides" },
   { label: "About", href: "/about" },
@@ -24,7 +26,8 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
         paddingTop: "24px",
       }}
     >
-      {/* Hamburger — cube sidebar trigger (static for now) */}
+      {/* Hamburger — cube sidebar trigger. Hidden when no toggle handler is wired (non-home pages). */}
+      {onToggleSidebar ? (
       <button
         style={{
           background: "none",
@@ -57,6 +60,9 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
           <path fillRule="evenodd" clipRule="evenodd" d="M9.6 6.4H6.4V9.6H9.6V6.4Z" fill="#333333" />
         </svg>
       </button>
+      ) : (
+        <div aria-hidden style={{ width: 32, height: 32, flexShrink: 0 }} />
+      )}
 
       {/* Center nav links with Rubik's cube logo */}
       <div
@@ -68,20 +74,7 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
         }}
       >
         {NAV_LINKS.slice(0, 2).map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            style={{
-              color: "#101010",
-              fontFamily: "var(--font-heading)",
-              fontSize: "16px",
-              fontWeight: 500,
-              lineHeight: "20px",
-              textDecoration: "none",
-            }}
-          >
-            {link.label}
-          </a>
+          <NavLink key={link.label} href={link.href} label={link.label} />
         ))}
 
         {/* Rubik's cube logo — V default, animates on hover */}
@@ -95,25 +88,11 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
         </a>
 
         {NAV_LINKS.slice(2).map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            style={{
-              color: "#101010",
-              fontFamily: "var(--font-heading)",
-              fontSize: "16px",
-              fontWeight: 500,
-              lineHeight: "20px",
-              textDecoration: "none",
-              ...(link.label === "Sides" ? { flexShrink: 0, width: "40px" } : {}),
-            }}
-          >
-            {link.label}
-          </a>
+          <NavLink key={link.label} href={link.href} label={link.label} />
         ))}
       </div>
 
-      {/* Control Centre icon (static for now) */}
+      {/* Control Centre icon */}
       <button
         style={{
           background: "none",
@@ -123,6 +102,7 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
           flexShrink: 0,
         }}
         aria-label="Open control centre"
+        onClick={openControlCenter}
       >
         <svg width="31" height="34" viewBox="0 0 31 34" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="2.331" y1="1.613" x2="2.331" y2="20.795" stroke="#333333" strokeWidth="1.613" />
@@ -150,5 +130,28 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
         </svg>
       </button>
     </nav>
+  );
+}
+
+function NavLink({ href, label }: { href: string; label: string }) {
+  const lift = useHoverLift();
+  return (
+    <a
+      href={href}
+      onMouseEnter={lift.onMouseEnter}
+      onMouseLeave={lift.onMouseLeave}
+      style={{
+        color: "#101010",
+        fontFamily: "var(--font-heading)",
+        fontSize: "16px",
+        fontWeight: 500,
+        lineHeight: "20px",
+        textDecoration: "none",
+        ...lift.style,
+        ...(label === "Sides" ? { flexShrink: 0, width: "40px" } : {}),
+      }}
+    >
+      {label}
+    </a>
   );
 }

@@ -53,6 +53,10 @@
 
   /* Motion */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Accent (swapped at runtime by AccentBridge) */
+  --color-accent-main: #F01D25;
+  --color-accent-light: #FCD2D4;
 }
 
 /* ── Animations ── */
@@ -72,8 +76,8 @@
 }
 
 ::selection {
-  background: #FFCCCC;
-  color: var(--color-brand-red);
+  background: var(--color-accent-light);
+  color: var(--color-accent-main);
 }
 
 body {
@@ -84,3 +88,95 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-synthesis: none;
 }
+
+html,
+body,
+[data-scroll-container] {
+  scrollbar-width: thin;
+  scrollbar-color: gray transparent;
+}
+
+/* ── Disco Mode ── */
+.disco-blob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.disco-blob-1 {
+  background: var(--color-brand-red);
+  opacity: 0.55;
+  animation: disco-drift-1 19s ease-in-out infinite alternate;
+}
+.disco-blob-2 {
+  background: var(--color-brand-orange);
+  opacity: 0.5;
+  animation: disco-drift-2 23s ease-in-out infinite alternate;
+}
+.disco-blob-3 {
+  background: var(--color-brand-green);
+  opacity: 0.45;
+  animation: disco-drift-3 26s ease-in-out infinite alternate;
+}
+.disco-blob-4 {
+  background: var(--color-brand-yellow);
+  opacity: 0.45;
+  animation: disco-drift-4 21s ease-in-out infinite alternate;
+}
+
+@keyframes disco-drift-1 {
+  from { transform: translate(-20vw, -25vh); }
+  to   { transform: translate(55vw, 50vh); }
+}
+@keyframes disco-drift-2 {
+  from { transform: translate(70vw, -10vh); }
+  to   { transform: translate(-15vw, 60vh); }
+}
+@keyframes disco-drift-3 {
+  from { transform: translate(20vw, 70vh); }
+  to   { transform: translate(75vw, -15vh); }
+}
+@keyframes disco-drift-4 {
+  from { transform: translate(60vw, 35vh); }
+  to   { transform: translate(5vw, 5vh); }
+}
+
+/* ── Music Player ── */
+.music-reel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.music-reel--spinning {
+  animation: music-reel-spin 3s linear infinite;
+}
+
+@keyframes music-reel-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes exploration-preview-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.music-knob {
+  cursor: pointer;
+  transform-origin: 167px 14px;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.music-knob--active {
+  transform: rotate(-15deg);
+}
+
+.music-knob:focus {
+  outline: none;
+}
+

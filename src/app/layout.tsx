@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AgentationRoot from "@/components/AgentationRoot";
+import GlobalChrome from "@/components/GlobalChrome";
 
 export const metadata: Metadata = {
   title: "Venkat — Portfolio",
@@ -13,7 +15,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div
+          id="page-translate"
+          style={{
+            backgroundColor: "var(--color-neutral-light)",
+            position: "relative",
+            zIndex: 1,
+            willChange: "transform",
+          }}
+        >
+          {children}
+        </div>
+        <GlobalChrome />
+        <AgentationRoot />
+      </body>
     </html>
   );
 }

@@ -99,25 +99,25 @@ export default function Sidebar({ open }: { open: boolean }) {
       }}
     >
       {/* Header */}
-      <div style={{ alignItems: "start", display: "flex", flexDirection: "column", gap: 4, paddingLeft: "8px", whiteSpace: "nowrap" }}>
+      <div style={{ alignItems: "start", display: "flex", flexDirection: "column", gap: 4, whiteSpace: "nowrap" }}>
         <div style={{ color: "#555555", fontFamily: "var(--font-heading)", fontSize: "24px", fontWeight: 500, lineHeight: "150%" }}>
           Site Info
         </div>
         <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%" }}>
-          All Systems Normal
+          Work in Progress (Always)
         </div>
       </div>
 
       {/* About */}
       <SidebarSection title="About">
-        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px", paddingLeft: "8px" }}>
+        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px" }}>
           Built out of curiosity and my love for design. Trying to capture my individual indentity on the wide web. I wanted this page to have a plain, calm vibe on the outside but with plenty of easter eggs inside. Form + Function = Hell Yeah!
         </div>
       </SidebarSection>
 
       {/* Alter Ego */}
       <SidebarSection title="Alter Ego">
-        <div style={{ display: "flex", alignItems: "end", gap: "24px", paddingLeft: "16px" }}>
+        <div style={{ display: "flex", alignItems: "end", gap: "24px" }}>
           <div
             style={{
               backgroundImage: "url(/images/whit3fang-sidebar.png)",
@@ -129,19 +129,19 @@ export default function Sidebar({ open }: { open: boolean }) {
               imageRendering: "pixelated",
             }}
           />
-          <PlayButton />
+          <PlayButton href="/whit3fang" />
         </div>
-        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px", paddingLeft: "8px" }}>
-          Whit3Fang is who I think I am inside my head. Go around have a chill chat with him.
+        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px" }}>
+          Whit3Fang is who I think I am inside my head. Go have some fun poking him XD
         </div>
       </SidebarSection>
 
       {/* Visual System */}
       <SidebarSection title="Visual System">
-        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px", paddingLeft: "8px" }}>
+        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px" }}>
           This page boasts a more pixelated vibe which always felt like home to me.
         </div>
-        <div style={{ display: "flex", gap: "6px", paddingLeft: "8px", whiteSpace: "nowrap" }}>
+        <div style={{ display: "flex", gap: "6px", whiteSpace: "nowrap" }}>
           <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", flexShrink: 0 }}>
             Fonts: Geist Pixel
           </div>
@@ -149,13 +149,22 @@ export default function Sidebar({ open }: { open: boolean }) {
             & Alpha Lyrae
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "16px", paddingLeft: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", flexShrink: 0 }}>
             Palette
           </div>
           <div style={{ display: "flex", gap: "4px" }}>
             {["#101010", "#F2F2F2", "#F01C26", "#F7ED12", "#F7941C", "#6BBD40", "#3654A3"].map((color) => (
-              <div key={color} style={{ backgroundColor: color, flexShrink: 0, height: "8px", width: "8px" }} />
+              <div
+                key={color}
+                style={{
+                  backgroundColor: color,
+                  flexShrink: 0,
+                  height: "8px",
+                  width: "8px",
+                  border: color === "#F2F2F2" ? "0.5px solid #E8E8E8" : undefined,
+                }}
+              />
             ))}
           </div>
         </div>
@@ -163,37 +172,41 @@ export default function Sidebar({ open }: { open: boolean }) {
 
       {/* Build */}
       <SidebarSection title="Build">
-        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", whiteSpace: "pre-wrap", width: "232px", paddingLeft: "8px" }}>
+        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", whiteSpace: "pre-wrap", width: "232px" }}>
           {"Designed in Figma, Built with Next.js using Claude Code & yours truly.  Hosted in Vercel."}
         </div>
       </SidebarSection>
 
       {/* Inspirations */}
       <SidebarSection title="Inspirations">
-        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px", paddingLeft: "8px" }}>
-          This portfolio would never be possible if not for getting inspired, referring some amazing designers. Here&apos;s the list of amazing people who inspire me to keep pushing everyday.
+        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px" }}>
+          This portfolio was made with a lot of inspirations and references from people who I always look up to. Inspired to get to that level soon. Do check out their works here!
         </div>
-        <div style={{ paddingLeft: "8px" }}>
-          <PlayButton label="Inspirations" />
-        </div>
+        <PlayButton label="Inspirations" />
       </SidebarSection>
 
       {/* Footer */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 32, paddingLeft: "8px", paddingTop: "24px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 32, paddingTop: "24px" }}>
         {/* Social icons */}
         <div style={{ display: "flex", gap: "24px" }}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19.33 0.71V0H0.685V0.735H0V19.28H0.71V20H19.28V19.29H20.02V0.71H19.33ZM19.26 18.515H18.565V19.255H1.42V18.48H0.71V1.39H1.42V0.725H18.525V1.355H19.26V18.515Z" fill="#555555" />
-            <path d="M7.06 7.825H4.815V15.83H7.135V7.825H7.06Z" fill="#555555" />
-            <path d="M7.06 4.155H4.84V4.865H4.205V6.355H4.815V7.065H7.06V6.355H7.69V4.865H7.06V4.155Z" fill="#555555" />
-            <path d="M15.78 10.02V9.335H15.07V8.575H14.385V7.84H11.43V8.54H10.695V7.825H8.525V15.83H10.695V10.68H11.455V9.97H12.92V10.68H13.63V15.83H15.85V10.02H15.78Z" fill="#555555" />
-          </svg>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18.752 1.2H14.314V2.339H13.254V3.454H12.118V4.502H11.026V5.57H10.442V6.753H9.436V5.57H8.908V4.506H7.837V3.45H6.753V2.327H5.605V1.2H1.208V3.474H2.329V4.537H3.473V6.738H4.576V7.809H5.598V8.905H6.749V11.047H5.621V12.114H4.587V13.282H3.48V15.427H2.318V16.498H1.21V17.57H0.242V18.721H5.602V17.593H6.742V16.501H7.83V15.448H8.912V14.337H11.026V15.425H12.106V16.492H13.254V17.603H14.317V18.72H19.821V17.569H18.746V16.498H17.586V15.426H16.494V13.28H15.391V12.117H14.316V11.034H13.241V8.906H14.32V7.803H15.377V5.573H16.528V4.52H17.595V3.475H18.754L18.752 1.2ZM3.472 4.514V3.45H5.602V4.53H6.754V5.59H7.829V6.73H8.917V7.79H9.445V8.897H11.019V6.738H12.094V5.602H13.23V4.502H14.314V3.454H15.39V4.553H14.341V6.738H13.238V7.801L12.102 7.809V8.897H11.018V11.036H12.106V12.119H13.246V13.286H14.318V14.342H15.389V15.418H16.496V16.506H14.314V15.418H13.215V14.338H12.097V13.217H11.022V12.114H9.965V11.026H8.902V8.894H7.818V7.799H6.743V6.739H5.592V5.603H4.566V4.515L3.472 4.514Z" fill="#555555" />
-          </svg>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" clipRule="evenodd" d="M19.709 8.05H18.726V11.896H17.731V16.746H16.734V18.697H14.806V17.738H12.891V16.746H11.863V15.791H9.973V16.757H9.054V17.73H7.094V16.764H6.078V13.862H5.162V11.889H3.195V10.941H1.251V9.985H0.347V9.019H1.244V8.057H3.206V7.066H5.169V6.11H7.128V5.111H9.087V4.113H11.859V3.198H13.838V2.199H15.768V1.2H19.709V8.05ZM10.873 8.038H9.954V8.978H9.046V9.941H7.09V10.896H6.077V13.847H7.09V15.774H8.066V11.884H9.017V10.908H9.914V9.974H10.869V9.019H11.866V8.064H12.825V7.065H10.873V8.038ZM12.832 7.033H13.808V6.067H12.832V7.033ZM13.816 6.053H14.792V5.098H13.816V6.053ZM14.8 4.128V5.09H15.73V4.128H14.8Z" fill="#555555" />
-          </svg>
+          <a href="https://www.linkedin.com/in/venkat-subramanian-g/" target="_blank" rel="noreferrer" aria-label="LinkedIn" style={{ display: "inline-flex", lineHeight: 0 }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.33 0.71V0H0.685V0.735H0V19.28H0.71V20H19.28V19.29H20.02V0.71H19.33ZM19.26 18.515H18.565V19.255H1.42V18.48H0.71V1.39H1.42V0.725H18.525V1.355H19.26V18.515Z" fill="#555555" />
+              <path d="M7.06 7.825H4.815V15.83H7.135V7.825H7.06Z" fill="#555555" />
+              <path d="M7.06 4.155H4.84V4.865H4.205V6.355H4.815V7.065H7.06V6.355H7.69V4.865H7.06V4.155Z" fill="#555555" />
+              <path d="M15.78 10.02V9.335H15.07V8.575H14.385V7.84H11.43V8.54H10.695V7.825H8.525V15.83H10.695V10.68H11.455V9.97H12.92V10.68H13.63V15.83H15.85V10.02H15.78Z" fill="#555555" />
+            </svg>
+          </a>
+          <a href="https://x.com/Venkat13568344" target="_blank" rel="noreferrer" aria-label="X" style={{ display: "inline-flex", lineHeight: 0 }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.752 1.2H14.314V2.339H13.254V3.454H12.118V4.502H11.026V5.57H10.442V6.753H9.436V5.57H8.908V4.506H7.837V3.45H6.753V2.327H5.605V1.2H1.208V3.474H2.329V4.537H3.473V6.738H4.576V7.809H5.598V8.905H6.749V11.047H5.621V12.114H4.587V13.282H3.48V15.427H2.318V16.498H1.21V17.57H0.242V18.721H5.602V17.593H6.742V16.501H7.83V15.448H8.912V14.337H11.026V15.425H12.106V16.492H13.254V17.603H14.317V18.72H19.821V17.569H18.746V16.498H17.586V15.426H16.494V13.28H15.391V12.117H14.316V11.034H13.241V8.906H14.32V7.803H15.377V5.573H16.528V4.52H17.595V3.475H18.754L18.752 1.2ZM3.472 4.514V3.45H5.602V4.53H6.754V5.59H7.829V6.73H8.917V7.79H9.445V8.897H11.019V6.738H12.094V5.602H13.23V4.502H14.314V3.454H15.39V4.553H14.341V6.738H13.238V7.801L12.102 7.809V8.897H11.018V11.036H12.106V12.119H13.246V13.286H14.318V14.342H15.389V15.418H16.496V16.506H14.314V15.418H13.215V14.338H12.097V13.217H11.022V12.114H9.965V11.026H8.902V8.894H7.818V7.799H6.743V6.739H5.592V5.603H4.566V4.515L3.472 4.514Z" fill="#555555" />
+            </svg>
+          </a>
+          <a href="https://t.me/Whit3fang" target="_blank" rel="noreferrer" aria-label="Telegram" style={{ display: "inline-flex", lineHeight: 0 }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M19.709 8.05H18.726V11.896H17.731V16.746H16.734V18.697H14.806V17.738H12.891V16.746H11.863V15.791H9.973V16.757H9.054V17.73H7.094V16.764H6.078V13.862H5.162V11.889H3.195V10.941H1.251V9.985H0.347V9.019H1.244V8.057H3.206V7.066H5.169V6.11H7.128V5.111H9.087V4.113H11.859V3.198H13.838V2.199H15.768V1.2H19.709V8.05ZM10.873 8.038H9.954V8.978H9.046V9.941H7.09V10.896H6.077V13.847H7.09V15.774H8.066V11.884H9.017V10.908H9.914V9.974H10.869V9.019H11.866V8.064H12.825V7.065H10.873V8.038ZM12.832 7.033H13.808V6.067H12.832V7.033ZM13.816 6.053H14.792V5.098H13.816V6.053ZM14.8 4.128V5.09H15.73V4.128H14.8Z" fill="#555555" />
+            </svg>
+          </a>
         </div>
 
         {/* Signature with trace animation */}
@@ -233,7 +246,7 @@ function SidebarSection({ title, children }: { title: string; children: React.Re
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, paddingLeft: "8px", whiteSpace: "nowrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" }}>
           <div style={{ backgroundColor: "#101010", flexShrink: 0, height: "12px", width: "12px" }} />
           <div style={{ color: "#101010", fontFamily: "var(--font-heading)", fontSize: "14px", fontWeight: 500, lineHeight: "180%" }}>
             {title}

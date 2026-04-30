@@ -9,9 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@notionhq/client": "^5.20.0",
+    "@paper-design/shaders-react": "^0.0.76",
+    "@vercel/blob": "^2.3.3",
+    "agentation": "^3.0.2",
+    "framer-motion": "^12.38.0",
+    "maplibre-gl": "^5.23.0",
     "next": "16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "web-haptics": "^0.0.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

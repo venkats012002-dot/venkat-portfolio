@@ -1,0 +1,114 @@
+"use client";
+
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import SidesList from "@/components/SidesList";
+import type { Side } from "@/components/SideItem";
+
+export default function SidesContent({ items }: { items: Side[] }) {
+  return (
+    <div
+      style={{
+        backgroundColor: "var(--color-neutral-light)",
+        color: "var(--color-neutral-dark)",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
+      <Navbar />
+
+      <main
+        style={{
+          alignItems: "center",
+          alignSelf: "stretch",
+          boxSizing: "border-box",
+          display: "flex",
+          flex: 1,
+          flexDirection: "column",
+          fontSynthesis: "none",
+          gap: 48,
+          MozOsxFontSmoothing: "grayscale",
+          paddingBlock: "144px 48px",
+          paddingInline: 48,
+          WebkitFontSmoothing: "antialiased",
+        }}
+      >
+        <div
+          style={{
+            alignItems: "start",
+            alignSelf: "stretch",
+            boxSizing: "border-box",
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+            maxWidth: 720,
+            width: "100%",
+            marginInline: "auto",
+          }}
+        >
+          <div
+            style={{
+              boxSizing: "border-box",
+              color: "#000000",
+              fontFamily: "var(--font-heading)",
+              fontSize: 24,
+              fontWeight: 500,
+              lineHeight: "44px",
+            }}
+          >
+            Sides
+          </div>
+          <div
+            style={{
+              alignItems: "start",
+              alignSelf: "stretch",
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
+            <div
+              style={{
+                alignSelf: "stretch",
+                color: "var(--color-neutral-7)",
+                fontFamily: "var(--font-body)",
+                fontSize: 14,
+                lineHeight: "21px",
+              }}
+            >
+              I&rsquo;m currently figuring out how code, shipping out 0-1 works.
+              Also experimenting and exploring around new AI tools.
+            </div>
+            <div
+              style={{
+                alignSelf: "stretch",
+                color: "var(--color-neutral-7)",
+                fontFamily: "var(--font-body)",
+                fontSize: 14,
+                lineHeight: "21px",
+              }}
+            >
+              This page contains all my writing, side projects, AI tool
+              explorations and everything in-between. Feel free to reach me via
+              email / Telegram or see more of my work on X(Twittter).
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            alignSelf: "stretch",
+            maxWidth: 720,
+            width: "100%",
+            marginInline: "auto",
+          }}
+        >
+          <SidesList items={items} />
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
