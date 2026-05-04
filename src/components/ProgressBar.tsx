@@ -60,8 +60,16 @@ export default function ProgressBar({ total = 4 }: ProgressBarProps) {
       {Array.from({ length: total }).map((_, i) => {
         const isActive = i === active;
         return (
-          <div
+          <button
             key={i}
+            type="button"
+            aria-label={`Scroll to section ${i + 1}`}
+            aria-current={isActive ? "true" : undefined}
+            onClick={() => {
+              const target = document.querySelector<HTMLElement>(`[data-section-index="${i}"]`);
+              if (!target) return;
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
             style={{
               width: "8px",
               height: isActive ? "32px" : "8px",
@@ -71,6 +79,8 @@ export default function ProgressBar({ total = 4 }: ProgressBarProps) {
               borderWidth: "0.5px",
               flexShrink: 0,
               overflow: "clip",
+              padding: 0,
+              cursor: isActive ? "default" : "pointer",
               transition: "height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, border-color 0.2s ease",
             }}
           />

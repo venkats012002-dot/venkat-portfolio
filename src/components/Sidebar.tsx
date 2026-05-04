@@ -113,6 +113,9 @@ export default function Sidebar({ open }: { open: boolean }) {
         <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px" }}>
           Built out of curiosity and my love for design. Trying to capture my individual indentity on the wide web. I wanted this page to have a plain, calm vibe on the outside but with plenty of easter eggs inside. Form + Function = Hell Yeah!
         </div>
+        <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px" }}>
+          Play around with the site settings on Control Center at the top right
+        </div>
       </SidebarSection>
 
       {/* Alter Ego */}
