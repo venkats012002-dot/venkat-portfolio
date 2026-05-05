@@ -1,14 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSoundSettings } from "@/hooks/useSoundSettings";
 
 const QUOTE = "The unexamined life is not worth living.";
 const EASE_OUT = "cubic-bezier(0.23, 1, 0.32, 1)";
+const SFX_SRC = "/audio/ticket-dispense.mp3";
 
 type Props = { width?: number; height?: number };
 
 export default function QuoteDispenser({ width = 467, height = 129 }: Props = {}) {
   const [isOut, setIsOut] = useState(false);
+  const sound = useSoundSettings();
+  const soundRef = useRef(sound);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    soundRef.current = sound;
+  }, [sound]);
+
+  useEffect(() => {
+    const a = new Audio(SFX_SRC);
+    a.preload = "auto";
+    audioRef.current = a;
+    return () => {
+      a.pause();
+      audioRef.current = null;
+    };
+  }, []);
+
+  const handleGenerate = () => {
+    const { muted, level } = soundRef.current;
+    if (!muted && audioRef.current) {
+      const a = audioRef.current;
+      a.currentTime = 0;
+      a.volume = Math.max(0, Math.min(1, level / 10));
+      void a.play().catch(() => {});
+    }
+    setIsOut(true);
+  };
 
   return (
     <div
@@ -106,7 +136,7 @@ export default function QuoteDispenser({ width = 467, height = 129 }: Props = {}
 
       <button
         type="button"
-        onClick={() => setIsOut(true)}
+        onClick={handleGenerate}
         disabled={isOut}
         style={{
           alignItems: "center",

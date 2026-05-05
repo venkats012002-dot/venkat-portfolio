@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import RubiksCube from "./RubiksCube";
 import { openControlCenter } from "@/hooks/useControlCenter";
-import { useHoverLift } from "@/hooks/useHoverLift";
-
 const NAV_LINKS = [
   { label: "Work", href: "/#keyprojects" },
   { label: "Explorations", href: "/explorations" },
@@ -181,7 +179,8 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
             <line x1="27.966" y1="1.613" x2="27.966" y2="20.795" stroke="#333333" strokeWidth="1.613" />
           </svg>
           {/* Mobile: crossfade between sidebar icon and X with a small rotation */}
-          <span className="is-mobile-only" style={{ position: "relative", display: "inline-block", width: 24, height: 24 }}>
+          {isMobile && (
+          <span style={{ position: "relative", display: "inline-block", width: 24, height: 24 }}>
             <AnimatePresence initial={false} mode="wait">
               {menuOpen ? (
                 <motion.svg
@@ -237,6 +236,7 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
               )}
             </AnimatePresence>
           </span>
+          )}
         </button>
 
         {/* Mobile dropdown menu — appears below the X */}
@@ -320,12 +320,9 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
 }
 
 function NavLink({ href, label }: { href: string; label: string }) {
-  const lift = useHoverLift();
   return (
     <a
       href={href}
-      onMouseEnter={lift.onMouseEnter}
-      onMouseLeave={lift.onMouseLeave}
       style={{
         color: "#101010",
         fontFamily: "var(--font-heading)",
@@ -333,7 +330,6 @@ function NavLink({ href, label }: { href: string; label: string }) {
         fontWeight: 500,
         lineHeight: "20px",
         textDecoration: "none",
-        ...lift.style,
         ...(label === "Sides" ? { flexShrink: 0, width: "40px" } : {}),
       }}
     >

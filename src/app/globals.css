@@ -356,6 +356,37 @@
   .sidebar-drawer > div {
     align-self: stretch;
   }
+  /* Explorations: full-bleed single-column grid inside the 8px gutter */
+  .explorations-main {
+    padding-inline: 0 !important;
+    padding-block: 24px !important;
+    gap: 24px !important;
+  }
+  .explorations-grid {
+    grid-template-columns: 1fr !important;
+  }
+  /* Card insets/labels scale with card width on mobile so the layout matches
+     the desktop look proportionally (desktop reference width ~437px). */
+  .exploration-card__media {
+    inset: 16.5% !important;
+  }
+  .exploration-card__action {
+    right: 5.5% !important;
+    top: 3.4% !important;
+  }
+  .exploration-card__name {
+    bottom: 3.2% !important;
+    left: 7.3% !important;
+    font-size: 13px !important;
+    line-height: 22px !important;
+  }
+  .exploration-card__year {
+    bottom: 3.2% !important;
+    right: 7.3% !important;
+    font-size: 13px !important;
+    line-height: 22px !important;
+  }
+
   /* Section separator: CSS-repeating dashes that extend with width (4px dash, 8px gap) */
   .sidebar-section-sep {
     width: 100%;

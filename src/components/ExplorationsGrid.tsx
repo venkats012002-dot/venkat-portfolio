@@ -3,6 +3,7 @@ import ExplorationCard, { type Exploration } from "./ExplorationCard";
 export default function ExplorationsGrid({ items }: { items: Exploration[] }) {
   return (
     <div
+      className="explorations-grid"
       style={{
         alignSelf: "stretch",
         boxSizing: "border-box",

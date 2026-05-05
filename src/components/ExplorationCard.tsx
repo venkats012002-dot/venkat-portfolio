@@ -13,6 +13,7 @@ export type Exploration = {
 export default function ExplorationCard({ name, year, media, link }: Exploration) {
   return (
     <article
+      className="exploration-card"
       style={{
         aspectRatio: "1 / 1",
         backgroundColor: "var(--color-neutral-light)",
@@ -25,6 +26,7 @@ export default function ExplorationCard({ name, year, media, link }: Exploration
       }}
     >
       <div
+        className="exploration-card__media"
         style={{
           backgroundColor: media ? "transparent" : "var(--color-neutral-3)",
           backgroundImage:
@@ -59,12 +61,13 @@ export default function ExplorationCard({ name, year, media, link }: Exploration
       </div>
 
       {link && (
-        <div style={{ position: "absolute", right: 24, top: 15 }}>
+        <div className="exploration-card__action" style={{ position: "absolute", right: 24, top: 15 }}>
           <PlayButton label={link.label ?? "View Live"} href={link.href} />
         </div>
       )}
 
       <div
+        className="exploration-card__name"
         style={{
           bottom: 14,
           boxSizing: "border-box",
@@ -80,6 +83,7 @@ export default function ExplorationCard({ name, year, media, link }: Exploration
       </div>
 
       <div
+        className="exploration-card__year"
         style={{
           bottom: 14,
           boxSizing: "border-box",

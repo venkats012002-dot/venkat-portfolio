@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
+import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
 import SidesList from "@/components/SidesList";
 import type { Side } from "@/components/SideItem";
@@ -16,7 +16,7 @@ export default function SidesContent({ items }: { items: Side[] }) {
         minHeight: "100vh",
       }}
     >
-      <Navbar />
+      <MobileNavWithSidebar />
 
       <main
         style={{

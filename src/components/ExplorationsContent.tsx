@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import Navbar from "@/components/Navbar";
+import { useEffect, useState } from "react";
+import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
 import ExplorationsViewToggle, {
   type ExplorationsView,
@@ -12,9 +12,21 @@ import type { Exploration } from "@/components/ExplorationCard";
 
 export default function ExplorationsContent({ items }: { items: Exploration[] }) {
   const [view, setView] = useState<ExplorationsView>("grid");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const effectiveView: ExplorationsView = isMobile ? "grid" : view;
 
   return (
     <div
+      data-scroll-container
       style={{
         backgroundColor: "var(--color-neutral-light)",
         color: "var(--color-neutral-dark)",
@@ -23,9 +35,10 @@ export default function ExplorationsContent({ items }: { items: Exploration[] })
         minHeight: "100vh",
       }}
     >
-      <Navbar />
+      <MobileNavWithSidebar />
 
       <main
+        className="explorations-main"
         style={{
           alignItems: "start",
           alignSelf: "stretch",
@@ -41,11 +54,13 @@ export default function ExplorationsContent({ items }: { items: Exploration[] })
           WebkitFontSmoothing: "antialiased",
         }}
       >
-        <ExplorationsViewToggle view={view} onChange={setView} />
+        <span className="is-desktop-only" style={{ display: "contents" }}>
+          <ExplorationsViewToggle view={view} onChange={setView} />
+        </span>
 
         {items.length === 0 ? (
           <EmptyState message="No explorations yet — add a row in Notion to see it here." />
-        ) : view === "grid" ? (
+        ) : effectiveView === "grid" ? (
           <ExplorationsGrid items={items} />
         ) : (
           <ExplorationsGallery items={items} />

@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
 import Separator from "@/components/Separator";
 import PersonalArchiveLogo from "@/components/PersonalArchiveLogo";
@@ -20,7 +20,7 @@ export default async function PersonalArchivePage() {
         minHeight: "100vh",
       }}
     >
-      <Navbar />
+      <MobileNavWithSidebar />
 
       <main
         style={{

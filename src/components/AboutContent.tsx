@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
+import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
 import PixelateSlider from "@/components/PixelateSlider";
 import Separator from "@/components/Separator";
@@ -20,7 +20,7 @@ export default function AboutContent() {
         minHeight: "100vh",
       }}
     >
-      <Navbar />
+      <MobileNavWithSidebar />
 
       <main
         style={{
