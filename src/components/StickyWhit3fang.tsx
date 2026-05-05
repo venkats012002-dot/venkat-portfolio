@@ -119,6 +119,7 @@ export default function StickyWhit3fang() {
     <button
       type="button"
       aria-label="whit3fang"
+      className="sticky-whit3fang"
       style={{
         position: "fixed",
         right: "32px",

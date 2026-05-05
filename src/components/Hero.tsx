@@ -11,14 +11,15 @@ export default function Hero() {
         flexDirection: "column",
         alignItems: "center",
         flexShrink: 0,
-        minHeight: "calc(100dvh - 96px)",
-        paddingTop: "96px",
+        minHeight: "calc(100dvh - var(--hero-padding-top))",
+        paddingTop: "var(--hero-padding-top)",
+        paddingInline: "max(16px, var(--nav-padding-x))",
       }}
     >
       <HeroHeading />
-      <div style={{ height: "48px" }} />
+      <div style={{ height: "var(--hero-gap-1)" }} />
       <HeroStatus />
-      <div style={{ height: "72px" }} />
+      <div style={{ height: "var(--hero-gap-2)" }} />
       <HeroContact />
     </section>
   );

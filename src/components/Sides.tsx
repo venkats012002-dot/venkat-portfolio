@@ -93,7 +93,7 @@ export default function Sides() {
               Sides
             </div>
           </div>
-          <div style={{ paddingLeft: "8px" }}>
+          <div className="sides-view-all" style={{ paddingLeft: "8px" }}>
             <PlayButton label="View all" href="/sides" />
           </div>
         </div>
@@ -101,10 +101,11 @@ export default function Sides() {
       </div>
 
       {/* Items row: arrow + 720 list + arrow, all in-flow */}
-      <div style={{ display: "flex", alignItems: "center", gap: "48px" }}>
+      <div className="sides-row" style={{ display: "flex", alignItems: "center", gap: "48px" }}>
         <ArrowButton side="left" active={canPrev} onClick={() => goTo(page - 1)} />
 
         <div
+          className="sides-list"
           style={{
             width: "720px",
             maxWidth: "100%",
@@ -123,6 +124,7 @@ export default function Sides() {
               style={{ display: "flex", flexDirection: "column", alignItems: "stretch", gap: "4px" }}
             >
               <div
+                className="sides-item-row"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -131,7 +133,7 @@ export default function Sides() {
                   alignSelf: "stretch",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <div className="sides-item-title" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <div
                     style={{
                       backgroundColor: item.color,
@@ -153,6 +155,7 @@ export default function Sides() {
                   </div>
                 </div>
                 <div
+                  className="sides-item-date"
                   style={{
                     color: "var(--color-neutral-7)",
                     fontFamily: "var(--font-body)",

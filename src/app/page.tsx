@@ -44,11 +44,12 @@ export default function Home() {
         }}
       >
         {/* Sidebar — flex child, width transitions from 0 to 280px */}
-        <Sidebar open={sidebarOpen} />
+        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {/* Main page — cube face that rotates */}
         <div
           data-scroll-container
+          className="home-cube-tilt"
           style={{
             flex: 1,
             height: "100vh",

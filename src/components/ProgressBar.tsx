@@ -45,6 +45,7 @@ export default function ProgressBar({ total = 4 }: ProgressBarProps) {
 
   return (
     <div
+      className="is-desktop-only"
       style={{
         position: "fixed",
         top: "50%",

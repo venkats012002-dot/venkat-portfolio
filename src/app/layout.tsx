@@ -1,11 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import AgentationRoot from "@/components/AgentationRoot";
 import GlobalChrome from "@/components/GlobalChrome";
 
 export const metadata: Metadata = {
-  title: "Venkat — Portfolio",
+  title: "Venkat - Portfolio",
   description: "Multi-disciplinary designer, artist and tinkerer",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

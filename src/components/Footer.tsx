@@ -66,6 +66,7 @@ export default function Footer() {
 
       {/* Bottom nav row */}
       <div
+        className="footer-bottom-row"
         style={{
           display: "flex",
           alignItems: "center",

@@ -13,9 +13,18 @@ type Props = {
 export default function ProjectCard({ image, tags, title, description }: Props) {
   const [hovered, setHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [supportsHover, setSupportsHover] = useState(true);
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover)");
+    const update = () => setSupportsHover(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   // Keep the cursor parked off-screen until first pointer position arrives,
   // so the blur-in doesn't flash at (0,0).
@@ -36,20 +45,20 @@ export default function ProjectCard({ image, tags, title, description }: Props) 
 
   return (
     <article
-      onMouseEnter={(e) => {
+      onMouseEnter={supportsHover ? (e) => {
         trackPointer(e);
         setHovered(true);
-      }}
-      onMouseLeave={() => setHovered(false)}
-      onMouseMove={trackPointer}
+      } : undefined}
+      onMouseLeave={supportsHover ? () => setHovered(false) : undefined}
+      onMouseMove={supportsHover ? trackPointer : undefined}
       style={{
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
         alignSelf: "stretch",
         gap: "16px",
-        cursor: hovered ? "none" : "default",
-        opacity: hovered ? 0.8 : 1,
+        cursor: supportsHover && hovered ? "none" : "default",
+        opacity: supportsHover && hovered ? 0.8 : 1,
         transition: "opacity 0.25s ease",
       }}
     >
@@ -68,7 +77,7 @@ export default function ProjectCard({ image, tags, title, description }: Props) 
         }}
       />
       <div style={{ display: "flex", flexDirection: "column", alignSelf: "stretch", gap: "8px" }}>
-        <div style={{ display: "flex", gap: "16px", justifyContent: "flex-start" }}>
+        <div className="project-card-tags" style={{ display: "flex", gap: "16px", justifyContent: "flex-start" }}>
           {tags.map((tag, i) => (
             <div
               key={tag}

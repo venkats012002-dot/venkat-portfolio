@@ -57,6 +57,242 @@
   /* Accent (swapped at runtime by AccentBridge) */
   --color-accent-main: #F01D25;
   --color-accent-light: #FCD2D4;
+
+  /* ── Responsive tokens (desktop defaults) ── */
+  --nav-padding-x: 32px;
+  --nav-padding-top: 24px;
+  --nav-center-gap: 72px;
+
+  --hero-padding-top: 96px;
+  --hero-gap-1: 48px;
+  --hero-gap-2: 72px;
+  --hero-heading-font: 40px;
+  --hero-heading-row-gap: 8px;
+  --hero-name-width: 136px;
+  --hero-name-height: 60px;
+
+  --hero-contact-gap: 144px;
+  --hero-contact-socials-gap: 32px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --nav-padding-x: 16px;
+    --nav-padding-top: 16px;
+    --nav-center-gap: 24px;
+
+    --hero-padding-top: 32px;
+    --hero-gap-1: 32px;
+    --hero-gap-2: 40px;
+    --hero-heading-font: 32px;
+    --hero-heading-row-gap: 4px;
+    --hero-name-width: 110px;
+    --hero-name-height: 38px;
+
+    --hero-contact-gap: 24px;
+    --hero-contact-socials-gap: 20px;
+  }
+}
+
+/* ── Navbar mobile layout: 3-column grid so the cube logo is truly centered ── */
+@media (max-width: 640px) {
+  .site-nav {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+  .site-nav > *:nth-child(1) { justify-self: start; }
+  .site-nav > *:nth-child(2) { justify-self: center; }
+  .site-nav > *:nth-child(3) { justify-self: end; }
+}
+
+/* ── Responsive visibility helpers ── */
+.is-mobile-only { display: none; }
+@media (max-width: 640px) {
+  .is-desktop-only { display: none !important; }
+  .is-mobile-only  { display: revert; }
+}
+
+/* ── Hero heading: row on desktop, wrapping flex on mobile ── */
+@media (max-width: 640px) {
+  .hero-heading-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 8px;
+    row-gap: 0;
+    line-height: 1.2;
+  }
+  .hero-heading-row,
+  .hero-heading-row * {
+    line-height: 1.2 !important;
+  }
+  .hero-heading-tail {
+    margin-top: 8px;
+  }
+  .hero-disciplinary {
+    text-underline-offset: 4px !important;
+    text-decoration-thickness: 1px !important;
+  }
+
+  .hero-status-list {
+    align-items: flex-start !important;
+    align-self: stretch;
+  }
+  .hero-status-item {
+    align-items: flex-start !important;
+  }
+  .hero-status-item > div:first-child {
+    margin-top: 6px;
+  }
+  .hero-status-row {
+    white-space: normal !important;
+    text-align: left;
+  }
+
+  .hero-contact {
+    flex-direction: column;
+    row-gap: 20px;
+    align-items: center;
+  }
+  /* socials at the bottom; mail then resume above */
+  .hero-contact-mail     { order: 1; }
+  .hero-contact-resume   { order: 2; }
+  .hero-contact-socials  { order: 3; }
+
+  /* Hero vertical-centered to the viewport on mobile */
+  .home-cube-tilt > section[data-section-index="0"] {
+    justify-content: center;
+    padding-top: 0 !important;
+    min-height: calc(100dvh - 72px) !important;
+  }
+
+  /* 8px outer page margin on mobile */
+  [data-scroll-container] {
+    padding-inline: 8px;
+  }
+
+  /* HiddenFooter bypasses the 8px gutter and is sized by height (image overflow clipped) */
+  [data-hidden-footer] {
+    margin-inline: -8px;
+    width: calc(100% + 16px) !important;
+    overflow: clip;
+    display: flex;
+    justify-content: center;
+  }
+  [data-hidden-footer] img {
+    width: auto !important;
+    height: 240px !important;
+    max-width: none;
+  }
+  /* sections with their own paddingInline already reduced via vars; zero
+     out the rest so they sit flush with the 8px container padding */
+  [data-scroll-container] > #keyprojects,
+  [data-scroll-container] > section[data-section-index="2"],
+  [data-scroll-container] > section[data-section-index="3"],
+  [data-scroll-container] > footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-inline: 0 !important;
+  }
+
+  /* ProjectCard image: fit the column width with a sane aspect ratio */
+  #keyprojects article > [role="img"] {
+    height: auto !important;
+    aspect-ratio: 16 / 10;
+  }
+  /* Tags wrap to the next line instead of squeezing on a single row */
+  .project-card-tags {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+
+  /* StickyWhit3fang: 8px from the right edge on mobile */
+  .sticky-whit3fang {
+    right: 8px !important;
+  }
+
+  /* Sides: list spans full width, arrows go to the bottom on a row at left/right ends */
+  .sides-row {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 24px !important;
+    column-gap: 0 !important;
+    width: 100%;
+  }
+  .sides-list {
+    width: 100% !important;
+    flex-basis: 100% !important;
+    order: 1;
+  }
+  .sides-row > button:first-child { order: 2; padding-left: 16px !important; }
+  .sides-row > button:last-child  { order: 3; padding-right: 16px !important; }
+
+  .sides-item-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+  /* Bullet aligns to top of multi-line title and is half-size on mobile */
+  .sides-item-title {
+    align-items: flex-start !important;
+  }
+  .sides-item-title > div:first-child {
+    width: 9px !important;
+    height: 9px !important;
+    margin-top: 9px;
+  }
+  /* Date moves above the title */
+  .sides-item-date {
+    order: -1;
+  }
+  /* PlayButton "View all" gets 4px right padding */
+  .sides-view-all {
+    padding-right: 4px;
+  }
+
+  /* Testimonials: any inline fixed-width child collapses to fill the section */
+  section[data-section-index="3"] [style*="width: 720px"],
+  section[data-section-index="3"] [style*="width:720px"],
+  section[data-section-index="3"] [style*="width: 620px"],
+  section[data-section-index="3"] [style*="width:620px"] {
+    width: 100% !important;
+  }
+
+  /* Footer bottom nav becomes vertical with action items on top, nav links at bottom */
+  .footer-bottom-row {
+    flex-direction: column !important;
+    gap: 16px !important;
+    align-items: center !important;
+  }
+  /* Top: Work / Explorations / Sides / About; middle: Copy Mail / Resume; bottom: socials */
+  .footer-bottom-row > *:nth-child(1) { order: 1; } /* Work */
+  .footer-bottom-row > *:nth-child(2) { order: 2; } /* Explorations */
+  .footer-bottom-row > *:nth-child(3) { order: 3; } /* Sides */
+  .footer-bottom-row > *:nth-child(4) { order: 7; } /* Socials row */
+  .footer-bottom-row > *:nth-child(5) { order: 4; } /* About */
+  .footer-bottom-row > *:nth-child(6) { order: 5; } /* Copy Mail Id */
+  .footer-bottom-row > *:nth-child(7) { order: 6; } /* Resume */
+
+  /* Sidebar: full-screen drawer, no 3D tilt */
+  .sidebar-drawer {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    min-width: 0 !important;
+    height: 100dvh !important;
+    z-index: 1200;
+  }
+  .sidebar-drawer-closed {
+    transform: translateX(-100%);
+  }
+  .sidebar-drawer-open {
+    transform: translateX(0);
+  }
+  .home-cube-tilt {
+    transform: none !important;
+  }
 }
 
 /* ── Animations ── */

@@ -40,9 +40,9 @@ const items: { color: string; content: React.ReactNode }[] = [
 
 export default function HeroStatus() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
+    <div className="hero-status-list" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
       {items.map(({ color, content }, i) => (
-        <div key={i} style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div key={i} className="hero-status-item" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div
             style={{
               backgroundColor: color,
@@ -52,6 +52,7 @@ export default function HeroStatus() {
             }}
           />
           <div
+            className="hero-status-row"
             style={{
               color: "var(--color-neutral-12)",
               fontFamily: "var(--font-body)",

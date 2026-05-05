@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GemSmoke } from "@paper-design/shaders-react";
 
 const textStyle: React.CSSProperties = {
   color: "var(--color-neutral-dark)",
   fontFamily: "var(--font-heading)",
-  fontSize: "40px",
+  fontSize: "var(--hero-heading-font)",
   fontWeight: 500,
   lineHeight: "150%",
   textAlign: "center",
@@ -22,7 +22,16 @@ const DISCIPLINES: { label: string; left: number; top: number }[] = [
 export default function HeroHeading() {
   const [showShader, setShowShader] = useState(false);
   const [disciplineHover, setDisciplineHover] = useState(false);
+  const [interactive, setInteractive] = useState(true);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover)");
+    const update = () => setInteractive(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const handleEnter = () => {
     if (hoverTimeoutRef.current) {
@@ -44,32 +53,32 @@ export default function HeroHeading() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--hero-heading-row-gap)" }}>
+      <div className="hero-heading-row" style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
         <div style={{ ...textStyle, ...siblingStyle }}>Hi! I&rsquo;m</div>
 
         <div
-          onClick={() => setShowShader((v) => !v)}
-          onKeyDown={(e) => {
+          onClick={interactive ? () => setShowShader((v) => !v) : undefined}
+          onKeyDown={interactive ? (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               setShowShader((v) => !v);
             }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label={showShader ? "Show name" : "Show shader"}
-          aria-pressed={showShader}
+          } : undefined}
+          role={interactive ? "button" : undefined}
+          tabIndex={interactive ? 0 : undefined}
+          aria-label={interactive ? (showShader ? "Show name" : "Show shader") : undefined}
+          aria-pressed={interactive ? showShader : undefined}
           style={{
             position: "relative",
-            height: 60,
-            cursor: "pointer",
+            height: showShader ? 60 : "var(--hero-name-height)",
+            cursor: interactive ? "pointer" : "default",
             outline: "none",
             display: showShader ? "flex" : "block",
             alignItems: "center",
             justifyContent: "center",
             overflow: showShader ? "clip" : "visible",
-            width: showShader ? 167 : 136,
+            width: showShader ? 167 : "var(--hero-name-width)",
             ...siblingStyle,
           }}
         >
@@ -99,8 +108,8 @@ export default function HeroHeading() {
                   position: "absolute",
                   left: -5,
                   top: 0,
-                  width: "136px",
-                  height: "60px",
+                  width: "var(--hero-name-width)",
+                  height: "var(--hero-name-height)",
                   backgroundColor: "var(--color-accent-light)",
                   transition: "background-color 0.25s ease",
                 }}
@@ -110,7 +119,7 @@ export default function HeroHeading() {
                   ...textStyle,
                   color: "var(--color-accent-main)",
                   position: "relative",
-                  width: "126px",
+                  width: "calc(var(--hero-name-width) - 10px)",
                   transition: "color 0.25s ease",
                 }}
               >
@@ -123,6 +132,7 @@ export default function HeroHeading() {
         <div style={{ ...textStyle, ...siblingStyle }}>, an</div>
 
         <div
+          className="hero-disciplinary"
           onMouseEnter={handleEnter}
           onMouseLeave={handleLeave}
           style={{
@@ -153,7 +163,7 @@ export default function HeroHeading() {
         </div>
       </div>
 
-      <div style={{ ...textStyle, ...siblingStyle, width: "fit-content" }}>
+      <div className="hero-heading-tail" style={{ ...textStyle, ...siblingStyle, width: "fit-content" }}>
         designer, artist and tinkerer.
       </div>
     </div>

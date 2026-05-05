@@ -19,9 +19,10 @@ export default function HeroContact() {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "144px" }}>
+    <div className="hero-contact" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--hero-contact-gap)" }}>
       {/* Copy Mail Id */}
       <button
+        className="hero-contact-mail"
         onClick={copyEmail}
         aria-label={copied ? "Email copied" : "Copy email address"}
         style={{
@@ -71,7 +72,7 @@ export default function HeroContact() {
       </button>
 
       {/* Socials */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "32px" }}>
+      <div className="hero-contact-socials" style={{ display: "flex", alignItems: "flex-start", gap: "var(--hero-contact-socials-gap)" }}>
         <a href="https://www.linkedin.com/in/venkat-subramanian-g/" target="_blank" rel="noreferrer" aria-label="LinkedIn" style={{ display: "inline-flex", lineHeight: 0 }}>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
             <defs>
@@ -100,7 +101,7 @@ export default function HeroContact() {
       </div>
 
       {/* Resume */}
-      <div style={{ paddingLeft: "8px" }}>
+      <div className="hero-contact-resume" style={{ paddingLeft: "8px" }}>
         <PlayButton label="Resume" />
       </div>
     </div>

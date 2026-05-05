@@ -22,7 +22,7 @@ function penEasing(t: number) {
   return easeOutCubic((t - 0.1) / 0.9) * 0.9 + 0.1;
 }
 
-export default function Sidebar({ open }: { open: boolean }) {
+export default function Sidebar({ open, onClose }: { open: boolean; onClose?: () => void }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const rafsRef = useRef<number[]>([]);
@@ -81,6 +81,7 @@ export default function Sidebar({ open }: { open: boolean }) {
 
   return (
     <div
+      className={`sidebar-drawer ${open ? "sidebar-drawer-open" : "sidebar-drawer-closed"}`}
       style={{
         alignItems: "start",
         backgroundColor: "#F2F2F2",
@@ -95,9 +96,39 @@ export default function Sidebar({ open }: { open: boolean }) {
         padding: open ? "32px 32px" : "32px 0px",
         height: "100vh",
         overflowY: "auto",
-        transition: "width 0.6s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: "width 0.6s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
       }}
     >
+      {onClose && (
+        <button
+          aria-label="Close sidebar"
+          onClick={onClose}
+          className="sidebar-close is-mobile-only"
+          style={{
+            position: "absolute",
+            top: 32,
+            right: 32,
+            background: "none",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
+            lineHeight: 0,
+            zIndex: 1,
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.20001 9.5871H6.40003V12.7871H3.20001V9.5871Z" fill="black"/>
+            <path d="M0 12.8H3.20002V16H0V12.8Z" fill="black"/>
+            <path d="M3.20001 3.20001H6.40003V6.40002H3.20001V3.20001Z" fill="black"/>
+            <path d="M0 0H3.20002V3.20001H0V0Z" fill="black"/>
+            <path d="M6.40002 6.38721H9.60004V9.58722H6.40002V6.38721Z" fill="black"/>
+            <path d="M9.60645 9.59357H12.8065V12.7936H9.60645V9.59357Z" fill="black"/>
+            <path d="M12.8001 12.8H16.0001V16H12.8001V12.8Z" fill="black"/>
+            <path d="M9.60004 3.18701H12.8001V6.38702H9.60004V3.18701Z" fill="black"/>
+            <path d="M12.8001 0H16.0001V3.20001H12.8001V0Z" fill="black"/>
+          </svg>
+        </button>
+      )}
       {/* Header */}
       <div style={{ alignItems: "start", display: "flex", flexDirection: "column", gap: 4, whiteSpace: "nowrap" }}>
         <div style={{ color: "#555555", fontFamily: "var(--font-heading)", fontSize: "24px", fontWeight: 500, lineHeight: "150%" }}>
