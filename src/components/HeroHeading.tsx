@@ -133,8 +133,8 @@ export default function HeroHeading() {
 
         <div
           className="hero-disciplinary"
-          onMouseEnter={handleEnter}
-          onMouseLeave={handleLeave}
+          onMouseEnter={interactive ? handleEnter : undefined}
+          onMouseLeave={interactive ? handleLeave : undefined}
           style={{
             ...textStyle,
             position: "relative",

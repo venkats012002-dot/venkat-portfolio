@@ -38,6 +38,7 @@ export default function BackToTop() {
   return (
     <button
       type="button"
+      className="back-to-top"
       onClick={scrollToTop}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

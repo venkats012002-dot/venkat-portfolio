@@ -83,6 +83,8 @@ export default function ClickBurst() {
   useEffect(() => {
     const handlePointerDown = (e: PointerEvent) => {
       if (!clickEnabledRef.current) return;
+      // Mobile: skip the pixel click burst entirely
+      if (window.matchMedia("(max-width: 640px)").matches) return;
 
       const target = e.target as Element | null;
       const onInteractive = !!target?.closest?.(

@@ -116,12 +116,17 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
           ))}
         </span>
 
-        {/* Rubik's cube logo — V default, animates on hover */}
+        {/* Rubik's cube logo — animates on hover; on home, click replays the animation without navigating */}
         <a
-          href="/"
+          href={onToggleSidebar ? undefined : "/"}
+          onClick={onToggleSidebar ? (e) => {
+            e.preventDefault();
+            setCubeHovered(true);
+            setTimeout(() => setCubeHovered(false), 800);
+          } : undefined}
           onMouseEnter={() => setCubeHovered(true)}
           onMouseLeave={() => setCubeHovered(false)}
-          style={{ display: "flex", alignItems: "center" }}
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
         >
           <RubiksCube size={48} animate={cubeHovered} />
         </a>

@@ -72,12 +72,12 @@ export default function Home() {
           <Sides />
           <Testimonials />
           <Footer />
+          <BackToTop />
           <HiddenFooter />
           <ProgressBar />
         </div>
       </div>
       <StickyWhit3fang />
-      <BackToTop />
       {showLoader && (
         <LoadingScreen
           onDone={() => {

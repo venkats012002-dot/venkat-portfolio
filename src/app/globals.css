@@ -84,10 +84,10 @@
     --hero-padding-top: 32px;
     --hero-gap-1: 32px;
     --hero-gap-2: 40px;
-    --hero-heading-font: 32px;
+    --hero-heading-font: 24px;
     --hero-heading-row-gap: 4px;
-    --hero-name-width: 110px;
-    --hero-name-height: 38px;
+    --hero-name-width: 84px;
+    --hero-name-height: 28px;
 
     --hero-contact-gap: 24px;
     --hero-contact-socials-gap: 20px;
@@ -147,17 +147,21 @@
   .hero-status-row {
     white-space: normal !important;
     text-align: left;
+    font-size: 12px !important;
   }
 
   .hero-contact {
-    flex-direction: column;
+    flex-direction: row !important;
+    flex-wrap: wrap;
     row-gap: 20px;
+    column-gap: 8px;
     align-items: center;
+    justify-content: center;
   }
-  /* socials at the bottom; mail then resume above */
+  /* row 1: mail + resume side-by-side; row 2: socials full-width */
   .hero-contact-mail     { order: 1; }
-  .hero-contact-resume   { order: 2; }
-  .hero-contact-socials  { order: 3; }
+  .hero-contact-resume   { order: 2; padding-left: 0 !important; }
+  .hero-contact-socials  { order: 3; flex-basis: 100%; display: flex !important; justify-content: center; }
 
   /* Hero vertical-centered to the viewport on mobile */
   .home-cube-tilt > section[data-section-index="0"] {
@@ -205,12 +209,45 @@
   /* Tags wrap to the next line instead of squeezing on a single row */
   .project-card-tags {
     flex-wrap: wrap;
-    row-gap: 4px;
+    row-gap: 4px !important;
+  }
+  /* Center-align all ProjectCard contents on mobile */
+  #keyprojects > article {
+    align-items: center !important;
+    text-align: center;
+  }
+  #keyprojects > article > div {
+    align-items: center !important;
+  }
+  #keyprojects > article .project-card-tags {
+    justify-content: center !important;
+  }
+  /* 48px breathing room between viewport-height Hero and the next section */
+  #keyprojects {
+    margin-top: 48px;
   }
 
-  /* StickyWhit3fang: 8px from the right edge on mobile */
+  /* StickyWhit3fang: 8px from the right edge, flush to bottom on mobile */
   .sticky-whit3fang {
     right: 8px !important;
+    bottom: 0 !important;
+  }
+
+  /* Hide HiddenFooter and bump bottom padding on mobile */
+  [data-hidden-footer] {
+    display: none !important;
+  }
+  .home-cube-tilt > footer {
+    padding-bottom: 24px !important;
+  }
+
+  /* BackToTop becomes inline at the end of the footer (left:8px, bottom:48px) */
+  .back-to-top {
+    position: static !important;
+    align-self: flex-start;
+    margin-left: 8px;
+    margin-bottom: 48px;
+    margin-top: 16px;
   }
 
   /* Sides: list spans full width, arrows go to the bottom on a row at left/right ends */
