@@ -286,9 +286,10 @@ function SidebarSection({ title, children }: { title: string; children: React.Re
             {title}
           </div>
         </div>
-        <svg width="248" height="4" viewBox="0 0 248 4" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+        <svg className="is-desktop-only" width="248" height="4" viewBox="0 0 248 4" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
           <line y1="2" x2="248" y2="2" stroke="#CACACA" strokeWidth="4" strokeDasharray="4 8" />
         </svg>
+        <div className="is-mobile-only sidebar-section-sep" aria-hidden />
       </div>
       {children}
     </div>

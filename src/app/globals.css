@@ -153,7 +153,7 @@
   .hero-contact {
     flex-direction: row !important;
     flex-wrap: wrap;
-    row-gap: 20px;
+    row-gap: 16px;
     column-gap: 24px;
     align-items: center;
     justify-content: center;
@@ -229,6 +229,7 @@
   }
   #keyprojects > article > div {
     align-items: center !important;
+    padding-inline: 8px;
   }
   #keyprojects > article .project-card-tags {
     justify-content: center !important;
@@ -238,10 +239,10 @@
     margin-top: 48px;
   }
 
-  /* StickyWhit3fang: 8px from the right edge, flush to bottom on mobile */
+  /* StickyWhit3fang: 8px from the right edge, 16px above the bottom on mobile */
   .sticky-whit3fang {
     right: 8px !important;
-    bottom: 0 !important;
+    bottom: 16px !important;
   }
 
   /* Hide HiddenFooter and bump bottom padding on mobile */
@@ -308,11 +309,15 @@
   section[data-section-index="3"] [style*="width:620px"] {
     width: 100% !important;
   }
+  /* 16px inner padding on the testimonial content blocks */
+  section[data-section-index="3"] > div {
+    padding-inline: 16px;
+  }
 
   /* Footer bottom nav becomes vertical with action items on top, nav links at bottom */
   .footer-bottom-row {
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 16px !important;
     align-items: center !important;
   }
   /* Top: Work / Explorations / Sides / About; middle: Copy Mail / Resume; bottom: socials */
@@ -350,6 +355,18 @@
   }
   .sidebar-drawer > div {
     align-self: stretch;
+  }
+  /* Section separator: CSS-repeating dashes that extend with width (4px dash, 8px gap) */
+  .sidebar-section-sep {
+    width: 100%;
+    height: 4px;
+    background-image: repeating-linear-gradient(
+      to right,
+      #CACACA 0 4px,
+      transparent 4px 12px
+    );
+    background-repeat: repeat-x;
+    background-position: left center;
   }
 }
 

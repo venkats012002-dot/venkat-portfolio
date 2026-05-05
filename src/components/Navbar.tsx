@@ -122,7 +122,8 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
           onClick={onToggleSidebar ? (e) => {
             e.preventDefault();
             setCubeHovered(true);
-            setTimeout(() => setCubeHovered(false), 800);
+            // RubiksCube cycles V→E→N→K→A→T at 500ms intervals; let it play through once
+            setTimeout(() => setCubeHovered(false), 2800);
           } : undefined}
           onMouseEnter={() => setCubeHovered(true)}
           onMouseLeave={() => setCubeHovered(false)}
