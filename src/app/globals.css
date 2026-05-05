@@ -250,7 +250,7 @@
     display: none !important;
   }
   .home-cube-tilt > footer {
-    padding-bottom: 24px !important;
+    padding-bottom: 16px !important;
   }
 
   /* BackToTop becomes inline at the end of the footer (left:8px, bottom:48px) */
@@ -309,8 +309,8 @@
   section[data-section-index="3"] [style*="width:620px"] {
     width: 100% !important;
   }
-  /* 16px inner padding on the testimonial content blocks */
-  section[data-section-index="3"] > div {
+  /* 16px inner padding only on the testimonial content (skip the heading block) */
+  section[data-section-index="3"] > div:not(:first-child) {
     padding-inline: 16px;
   }
 
