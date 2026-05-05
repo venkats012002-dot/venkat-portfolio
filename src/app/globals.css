@@ -401,6 +401,28 @@
   }
 }
 
+/* ── Hero status link tooltips (desktop only) ── */
+.hero-status-link {
+  position: relative;
+}
+.hero-status-link__tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 5;
+  line-height: 0;
+}
+@media (min-width: 641px) and (hover: hover) and (pointer: fine) {
+  .hero-status-link:hover .hero-status-link__tip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 /* ── Animations ── */
 @keyframes arrowBounce {
   0%   { transform: translateX(0); }

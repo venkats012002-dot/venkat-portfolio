@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import RubiksCube from "./RubiksCube";
 import { openControlCenter } from "@/hooks/useControlCenter";
+import { ACCENT_COLORS, ACCENT_ORDER } from "@/hooks/useAccentColor";
+
+const BOX_PALETTE = ACCENT_ORDER.map((c) => ACCENT_COLORS[c].main);
+const LETTER_BOX_STAGGER_MS = 60;
 const NAV_LINKS = [
   { label: "Work", href: "/#keyprojects" },
   { label: "Explorations", href: "/explorations" },
@@ -320,9 +324,46 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
 }
 
 function NavLink({ href, label }: { href: string; label: string }) {
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  const onEnter = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    let current = 0;
+    setActiveIdx(0);
+    intervalRef.current = setInterval(() => {
+      current++;
+      if (current < label.length) {
+        setActiveIdx(current);
+      } else {
+        setActiveIdx(-1);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      }
+    }, LETTER_BOX_STAGGER_MS);
+  };
+  const onLeave = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setActiveIdx(-1);
+  };
+
   return (
     <a
       href={href}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      aria-label={label}
       style={{
         color: "#101010",
         fontFamily: "var(--font-heading)",
@@ -333,7 +374,38 @@ function NavLink({ href, label }: { href: string; label: string }) {
         ...(label === "Sides" ? { flexShrink: 0, width: "40px" } : {}),
       }}
     >
-      {label}
+      {label.split("").map((ch, i) => {
+        const isActive = activeIdx === i;
+        return (
+          <span
+            key={i}
+            aria-hidden
+            style={{ display: "inline-block", position: "relative" }}
+          >
+            <span
+              style={{
+                backgroundColor: BOX_PALETTE[i % BOX_PALETTE.length],
+                inset: 0,
+                opacity: isActive ? 1 : 0,
+                position: "absolute",
+                transform: isActive ? "scale(1)" : "scale(0.75)",
+                transition: "opacity 100ms ease, transform 100ms ease",
+                zIndex: 0,
+              }}
+            />
+            <span
+              style={{
+                color: isActive ? "#FFFFFF" : "#101010",
+                position: "relative",
+                transition: "color 75ms ease",
+                zIndex: 1,
+              }}
+            >
+              {ch}
+            </span>
+          </span>
+        );
+      })}
     </a>
   );
 }

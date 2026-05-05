@@ -216,10 +216,10 @@ export default function AboutContent() {
               gap: 16,
             }}
           >
-            <PhotoFrame />
-            <PhotoFrame />
-            <PhotoFrame />
-            <PhotoFrame />
+            <PhotoFrame frameSrc="/svgs/photo-frame-4.svg" />
+            <PhotoFrame frameSrc="/svgs/photo-frame-2.svg" />
+            <PhotoFrame frameSrc="/svgs/photo-frame-3.svg" />
+            <PhotoFrame frameSrc="/svgs/photo-frame-1.svg" />
           </div>
           <Separator variant="primary" color="#DDDDDD" />
           <p

@@ -152,6 +152,20 @@ export default function PixelateSlider({
           width: TRACK_WIDTH,
         }}
       >
+        {/* Filled portion behind the thumb — tinted with the Control Center accent */}
+        <div
+          aria-hidden
+          style={{
+            backgroundColor: "var(--color-accent-light)",
+            boxSizing: "border-box",
+            height: THUMB_SIZE,
+            left: 0,
+            position: "absolute",
+            top: 2,
+            transition: "background-color 0.25s ease",
+            width: thumbX + THUMB_SIZE / 2,
+          }}
+        />
         <div
           style={{
             backgroundColor: "var(--color-accent-main)",
@@ -161,6 +175,7 @@ export default function PixelateSlider({
             overflow: "clip",
             position: "absolute",
             top: 2,
+            transition: "background-color 0.25s ease",
             width: THUMB_SIZE,
           }}
         />

@@ -104,7 +104,7 @@ export default async function PersonalArchivePage() {
                   lineHeight: "180%",
                 }}
               >
-                {year}
+                {year} • {items.length} {items.length === 1 ? "entry" : "entries"} so far
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
                 {items.map((entry) => (

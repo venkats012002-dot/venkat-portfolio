@@ -12,9 +12,11 @@ const PHOTO_H = 156.609;
 export default function PhotoFrame({
   src,
   alt = "",
+  frameSrc = "/svgs/photo-frame.svg",
 }: {
   src?: string;
   alt?: string;
+  frameSrc?: string;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -27,7 +29,7 @@ export default function PhotoFrame({
         flexShrink: 0,
         height: FRAME_H,
         position: "relative",
-        transform: hovered ? "scale(1.2) rotate(5deg)" : "scale(1) rotate(0deg)",
+        transform: hovered ? "scale(0.9) rotate(5deg)" : "scale(1) rotate(0deg)",
         transformOrigin: "center center",
         transition: "transform 0.6s var(--ease-out)",
         width: FRAME_W,
@@ -37,7 +39,7 @@ export default function PhotoFrame({
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/svgs/photo-frame.svg"
+        src={frameSrc}
         alt=""
         aria-hidden
         style={{
