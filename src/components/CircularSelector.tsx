@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useWebHaptics } from "web-haptics/react";
 import { useSoundSettings } from "@/hooks/useSoundSettings";
 
@@ -10,10 +10,47 @@ const MAX_LEVER_DEG = 45;
 const PLACEHOLDER_BODY =
   "Lorem ipsum dolor sit amet consectetur. Venenatis non nisl non amet sed ipsum.";
 
-const CATEGORIES: { title: string; body: string }[] = [
+function SkillSection({ heading, items }: { heading: string; items: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ color: "#101010", fontFamily: "var(--font-body)", fontSize: 13, lineHeight: "20px" }}>
+        {heading}
+      </div>
+      <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+        {items}
+      </div>
+    </div>
+  );
+}
+
+const TECHNICAL_SKILLS_BODY: ReactNode = (
+  <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+      This list includes all the skills I currently possess, the skills i&apos;m working on / learning (which is ever growing) and the tool sets I utilise.
+    </div>
+    <SkillSection
+      heading="PRODUCT"
+      items="Product Strategy, UX Design, Concept Development, Interaction Design, Rapid Iteration / Whiteboarding, Systems Thinking, High fidelity prototyping, ..."
+    />
+    <SkillSection
+      heading="VISUAL"
+      items="Brand Identity, Brand guidelines, graphic design, Motion, AI image gen, Taste (ofcourse :), web design, Reports, Decks, One Pagers, creative coding, Logo design, creative coding, svg animations, hyper-realistic pencil art, sketching, .."
+    />
+    <SkillSection
+      heading="MISC"
+      items="Design documentation, Stakeholder Management, Design hiring (Noob)"
+    />
+    <SkillSection
+      heading="TOOLS/FRAMEWORKS (Only favs)"
+      items="Figma, Framer, Claude Code, Poke by Interaction, Nano Banana, Midjourney, Paper, Notion, Rive, GSAP, p5js, three.js, next.js, Mymind, Mobbin, ..."
+    />
+  </div>
+);
+
+const CATEGORIES: { title: string; panelTitle?: string; body: string | ReactNode }[] = [
   { title: "Design Philosophies", body: PLACEHOLDER_BODY },
   { title: "Interesting things about me", body: PLACEHOLDER_BODY },
-  { title: "Technical Skills", body: PLACEHOLDER_BODY },
+  { title: "Technical Skills", panelTitle: "Technical Skills (A.k.a Superpowers)", body: TECHNICAL_SKILLS_BODY },
   { title: "Recommendations", body: PLACEHOLDER_BODY },
   { title: "Personal Archive", body: PLACEHOLDER_BODY },
 ];
@@ -271,17 +308,23 @@ export default function CircularSelector() {
         );
       })}
 
-      {/* Content panel — updates on release */}
+      {/* Content panel — updates on release; scrolls when content overflows 399px */}
       <div
         style={{
           borderColor: "#DDDDDD",
           borderStyle: "solid",
           borderWidth: 1,
           boxSizing: "border-box",
+          display: "flex",
+          flexDirection: "column",
+          gap: 24,
           height: 399,
-          overflow: "clip",
+          overflowY: "auto",
+          paddingBlock: 15,
+          paddingInline: 31,
           position: "absolute",
           right: 0,
+          scrollbarWidth: "thin",
           top: 82,
           width: 660,
         }}
@@ -292,28 +335,26 @@ export default function CircularSelector() {
             color: "#101010",
             fontFamily: "var(--font-body)",
             fontSize: 18,
-            left: 31,
             lineHeight: "32px",
-            position: "absolute",
-            top: 15,
           }}
         >
-          {activeCat.title}
+          {activeCat.panelTitle ?? activeCat.title}
         </div>
-        <div
-          style={{
-            boxSizing: "border-box",
-            color: "#7A7A7A",
-            fontFamily: "var(--font-body)",
-            fontSize: 14,
-            left: 31,
-            lineHeight: "21px",
-            position: "absolute",
-            top: 72,
-          }}
-        >
-          {activeCat.body}
-        </div>
+        {typeof activeCat.body === "string" ? (
+          <div
+            style={{
+              boxSizing: "border-box",
+              color: "#7A7A7A",
+              fontFamily: "var(--font-body)",
+              fontSize: 14,
+              lineHeight: "21px",
+            }}
+          >
+            {activeCat.body}
+          </div>
+        ) : (
+          activeCat.body
+        )}
       </div>
     </div>
   );
