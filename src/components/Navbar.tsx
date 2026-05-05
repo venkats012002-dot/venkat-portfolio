@@ -185,12 +185,12 @@ export default function Navbar({ onToggleSidebar }: { onToggleSidebar?: () => vo
               {menuOpen ? (
                 <motion.svg
                   key="x"
-                  width="24"
-                  height="24"
+                  width="20"
+                  height="20"
                   viewBox="0 0 16 16"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  style={{ position: "absolute", inset: 0 }}
+                  style={{ position: "absolute", top: 2, left: 2 }}
                   initial={{ opacity: 0, rotate: -45, scale: 0.7 }}
                   animate={{ opacity: 1, rotate: 0, scale: 1 }}
                   exit={{ opacity: 0, rotate: 45, scale: 0.7 }}

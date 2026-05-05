@@ -146,7 +146,7 @@
   }
   .hero-status-row {
     white-space: normal !important;
-    text-align: left;
+    text-align: center;
     font-size: 12px !important;
   }
 
@@ -154,7 +154,7 @@
     flex-direction: row !important;
     flex-wrap: wrap;
     row-gap: 20px;
-    column-gap: 8px;
+    column-gap: 24px;
     align-items: center;
     justify-content: center;
   }
@@ -170,9 +170,20 @@
     min-height: calc(100dvh - 72px) !important;
   }
 
-  /* 8px outer page margin on mobile */
+  /* 8px outer page margin on mobile + clip any sub-pixel horizontal overflow */
   [data-scroll-container] {
     padding-inline: 8px;
+    overflow-x: clip;
+  }
+  body {
+    overflow-x: clip;
+  }
+
+  /* DisciplineTag tooltips render absolutely at negative offsets; on mobile they
+     don't show (no hover) but their layout boxes extend past the viewport and
+     create horizontal scroll. Take them out of layout entirely. */
+  .hero-disciplinary > div {
+    display: none !important;
   }
 
   /* HiddenFooter bypasses the 8px gutter and is sized by height (image overflow clipped) */
@@ -257,6 +268,7 @@
     row-gap: 24px !important;
     column-gap: 0 !important;
     width: 100%;
+    padding-inline: 8px;
   }
   .sides-list {
     width: 100% !important;
@@ -300,7 +312,7 @@
   /* Footer bottom nav becomes vertical with action items on top, nav links at bottom */
   .footer-bottom-row {
     flex-direction: column !important;
-    gap: 16px !important;
+    gap: 12px !important;
     align-items: center !important;
   }
   /* Top: Work / Explorations / Sides / About; middle: Copy Mail / Resume; bottom: socials */
@@ -329,6 +341,15 @@
   }
   .home-cube-tilt {
     transform: none !important;
+  }
+
+  /* Sidebar drawer content fills the full width on mobile (was capped at 232px per Paper export) */
+  .sidebar-drawer [style*="width: 232px"],
+  .sidebar-drawer [style*="width:232px"] {
+    width: 100% !important;
+  }
+  .sidebar-drawer > div {
+    align-self: stretch;
   }
 }
 
