@@ -401,6 +401,14 @@
   }
 }
 
+/* ── Inspiration list: wavy underline on hover ── */
+.inspiration-name:hover {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 2px;
+}
+
 /* ── Hero status link tooltips (desktop only) ── */
 .hero-status-link {
   position: relative;

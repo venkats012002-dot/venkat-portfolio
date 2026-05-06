@@ -216,7 +216,7 @@ export default function Sidebar({ open, onClose }: { open: boolean; onClose?: ()
         <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: "13px", lineHeight: "150%", width: "232px" }}>
           This portfolio was made with a lot of inspirations and references from people who I always look up to. Inspired to get to that level soon. Do check out their works here!
         </div>
-        <PlayButton label="Inspirations" />
+        <PlayButton label="Inspirations" href="/inspirations" />
       </SidebarSection>
 
       {/* Footer */}
