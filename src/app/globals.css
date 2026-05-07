@@ -401,6 +401,74 @@
   }
 }
 
+/* ── Themed pixel cursors ──
+   Default applies to body and inherits down. State-specific overrides match
+   inline `style={{ cursor: "..." }}` strings via attribute selectors with
+   !important so they beat the inline value. ProjectCard's `cursor: "none"`
+   path is intentionally not overridden so the portal-cursor still shows. */
+/* PNG sources are 3× exports of the original art. Declared as 4× in
+   image-set() so the displayed CSS size = source / 4 ≈ 0.75× the
+   originals, while the browser still has high-DPI source pixels for
+   crisp retina rendering. Hotspots scaled by 0.75 from the originals. */
+body {
+  cursor: image-set(url('/cursors/main.png') 4x) 1 1, auto;
+}
+
+[style*="cursor: default"],
+[style*="cursor:default"] {
+  cursor: image-set(url('/cursors/main.png') 4x) 1 1, default !important;
+}
+
+a, button, [role="button"], label[for],
+input[type="submit"], input[type="button"],
+input[type="checkbox"], input[type="radio"],
+select, summary,
+[style*="cursor: pointer"],
+[style*="cursor:pointer"] {
+  cursor: image-set(url('/cursors/hover.png') 4x) 8 2, pointer !important;
+}
+
+[style*="cursor: grab"]:not([style*="grabbing"]),
+[style*="cursor:grab"]:not([style*="grabbing"]) {
+  cursor: image-set(url('/cursors/grab.png') 4x) 9 11, grab !important;
+}
+
+[style*="cursor: grabbing"],
+[style*="cursor:grabbing"] {
+  cursor: image-set(url('/cursors/grabbing.png') 4x) 9 8, grabbing !important;
+}
+
+[style*="cursor: move"],
+[style*="cursor:move"] {
+  cursor: image-set(url('/cursors/move.png') 4x) 11 11, move !important;
+}
+
+[style*="cursor: wait"],
+[style*="cursor:wait"] {
+  cursor: image-set(url('/cursors/wait.png') 4x) 8 12, wait !important;
+}
+
+[style*="cursor: progress"],
+[style*="cursor:progress"] {
+  cursor: image-set(url('/cursors/progress.png') 4x) 1 1, progress !important;
+}
+
+[style*="cursor: help"],
+[style*="cursor:help"] {
+  cursor: image-set(url('/cursors/help.png') 4x) 1 1, help !important;
+}
+
+/* ── Doodles ── */
+.doodle {
+  display: block;
+  max-width: none;
+}
+@media (max-width: 640px) {
+  .doodle-desktop-only {
+    display: none;
+  }
+}
+
 /* ── Inspiration list: wavy underline on hover ── */
 .inspiration-name:hover {
   text-decoration-line: underline;

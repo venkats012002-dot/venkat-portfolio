@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 const FRAME_W = 169;
 const FRAME_H = 191;
@@ -13,10 +13,12 @@ export default function PhotoFrame({
   src,
   alt = "",
   frameSrc = "/svgs/photo-frame.svg",
+  children,
 }: {
   src?: string;
   alt?: string;
   frameSrc?: string;
+  children?: ReactNode;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -65,6 +67,7 @@ export default function PhotoFrame({
           }}
         />
       )}
+      {children}
     </div>
   );
 }
