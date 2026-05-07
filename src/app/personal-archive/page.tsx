@@ -145,9 +145,9 @@ function EntryRow({ entry }: { entry: ArchiveEntry }) {
           style={{
             flex: "1 1 540px",
             maxWidth: 540,
-            color: "#555555",
+            color: "#101010",
             fontFamily: "var(--font-heading)",
-            fontSize: "18px",
+            fontSize: "14px",
             fontWeight: 500,
             lineHeight: "180%",
           }}

@@ -3,12 +3,10 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useWebHaptics } from "web-haptics/react";
 import { useSoundSettings } from "@/hooks/useSoundSettings";
+import PlayButton from "./PlayButton";
 
 const STEP_PX = 64;
 const MAX_LEVER_DEG = 45;
-
-const PLACEHOLDER_BODY =
-  "Lorem ipsum dolor sit amet consectetur. Venenatis non nisl non amet sed ipsum.";
 
 function SkillSection({ heading, items }: { heading: string; items: string }) {
   return (
@@ -22,6 +20,73 @@ function SkillSection({ heading, items }: { heading: string; items: string }) {
     </div>
   );
 }
+
+const RECOMMENDATIONS_BODY: ReactNode = (
+  <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+    Coming Soon
+  </div>
+);
+
+const INTERESTING_THINGS_BODY: ReactNode = (
+  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+      I&apos;m a pretty &lsquo;meh&rsquo; person, but have always found myself to be an avid enjoyer of factual rabbit holes and diving into them for hours. Most probably we can have a deep discussion on something random. I would call myself a jack of all trades but a master of some. I&apos;m a lot curious to get to know the &lsquo;how&rsquo; but sometimes the lazyness just doesn&apos;t take me into the depth. But sometimes there is a bypass and a skillset get&apos;s unlocked.
+    </div>
+    <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+      Art - was too much into hyper-realistic pencil art for a long time and it just stopped when I hit the cieling (if you don&apos;t believe me check out in explorations). And then I jumped into pen sketches, murals (multiple around 1.5m - 2m) and ended when I left college. Design is the newest addiction.
+    </div>
+    <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+      Into weightlifting, cricket &amp; badminton (double rotator-cuff injuries). I&apos;m an avid sitcom enjoyer and have a mental issue with me watching The Office 4 times, Modern Family 3 times and B99 2 times. Not limited to all these but this was all that came to my mind when I wrote &ldquo;Interesting things about me&rdquo;.
+    </div>
+  </div>
+);
+
+const philosophyParagraphStyle: CSSProperties = {
+  color: "#7A7A7A",
+  fontFamily: "var(--font-body)",
+  fontSize: 14,
+  lineHeight: "21px",
+};
+
+const DESIGN_PHILOSOPHIES_BODY: ReactNode = (
+  <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={philosophyParagraphStyle}>
+      I always have strong opinions on things i&apos;m passionate about. Would always be up for getting them challenged and have a meaningful talk :)
+    </div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={philosophyParagraphStyle}>
+        I feel craft is something which is becoming scarce and anything going out should be played around and tested to the limits to understand leaks and fix them. First absorbing the work and pushing it is always the way.
+      </div>
+      <div style={philosophyParagraphStyle}>
+        Create &gt;&gt;&gt;&gt; Consume. A food critic can breakdown a dish well and articulate it well to their audience, but if they also possess some cooking skills that helps them appreciate the dish even more and know where and what it&apos;s excelling and missing. Both are important but creation should be greater than consumption to know the possibiltiy and limits of the self or else it&apos;s always in &lsquo;your mind&rsquo;.
+      </div>
+      <div style={philosophyParagraphStyle}>
+        Feedback is just the best thing to ever happen to any creative act. With multiple iterations and feedback is how you build something which everyone loves to use.
+      </div>
+      <div style={philosophyParagraphStyle}>
+        Before getting on with a task, I make sure to get every little piece of context there is. This ensures there is no back and forth and I can start on a clear note.
+      </div>
+      <div style={philosophyParagraphStyle}>
+        No design process follows a set guide and that is always something I keep in mind. Always adapt moving forward and think rationally what this situation demands of me. Working with a small team makes sure that I don&apos;t get stuck on the irregular requirements so these proactive measurements help a lot.
+      </div>
+      <div style={philosophyParagraphStyle}>
+        And a lot more to be added :&apos;)
+      </div>
+    </div>
+  </div>
+);
+
+const PERSONAL_ARCHIVE_BODY: ReactNode = (
+  <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+      I like to go on walks everyday and the best part about it was always the introspection and self talks I have on everything around me. They say the world is your canvas right. Not every thought I get might be appropriate to be shared on the internet, but most times I get thoughts on how everything around us has a story to convey and makes me wondering.
+    </div>
+    <div style={{ color: "#7A7A7A", fontFamily: "var(--font-body)", fontSize: 14, lineHeight: "21px" }}>
+      This page is &ldquo;that&rdquo; place where in I just dump all my random thoughts, quirks, banter on everything being design, art, psychology and what not. If you relate even on the tiniest bit feel free to DM or reach out to me in my socials or email.
+    </div>
+    <PlayButton label="Visit Personal Archive" href="/personal-archive" />
+  </div>
+);
 
 const TECHNICAL_SKILLS_BODY: ReactNode = (
   <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -48,11 +113,11 @@ const TECHNICAL_SKILLS_BODY: ReactNode = (
 );
 
 const CATEGORIES: { title: string; panelTitle?: string; body: string | ReactNode }[] = [
-  { title: "Design Philosophies", body: PLACEHOLDER_BODY },
-  { title: "Interesting things about me", body: PLACEHOLDER_BODY },
+  { title: "Design Philosophies", body: DESIGN_PHILOSOPHIES_BODY },
+  { title: "Interesting things about me", body: INTERESTING_THINGS_BODY },
   { title: "Technical Skills", panelTitle: "Technical Skills (A.k.a Superpowers)", body: TECHNICAL_SKILLS_BODY },
-  { title: "Recommendations", body: PLACEHOLDER_BODY },
-  { title: "Personal Archive", body: PLACEHOLDER_BODY },
+  { title: "Recommendations", body: RECOMMENDATIONS_BODY },
+  { title: "Personal Archive", body: PERSONAL_ARCHIVE_BODY },
 ];
 
 const N = CATEGORIES.length;
