@@ -7,11 +7,51 @@ const PULL_LERP = 0.2;
 const RETRACT_DELAY = 20;
 const RETRACT_DURATION = 450;
 
+function getScrollEl(): HTMLElement | null {
+  // Use [data-scroll-container] only when it actually scrolls (home page).
+  // Other pages keep the attribute as a styling hook but the document is the
+  // real scroller, so fall back to document.scrollingElement so the wheel
+  // logic can read/write the right scroll position there too.
+  const container = document.querySelector<HTMLElement>("[data-scroll-container]");
+  if (container) {
+    const overflowY = window.getComputedStyle(container).overflowY;
+    if (
+      (overflowY === "auto" || overflowY === "scroll") &&
+      container.scrollHeight > container.clientHeight
+    ) {
+      return container;
+    }
+  }
+  return (
+    (document.scrollingElement as HTMLElement | null) ||
+    document.documentElement
+  );
+}
+
+function findInternalScrollable(
+  el: Element | null,
+  mainScrollEl: HTMLElement
+): HTMLElement | null {
+  let current = el as HTMLElement | null;
+  while (current && current !== mainScrollEl) {
+    const style = window.getComputedStyle(current);
+    const overflowY = style.overflowY;
+    if (
+      (overflowY === "auto" || overflowY === "scroll") &&
+      current.scrollHeight > current.clientHeight
+    ) {
+      return current;
+    }
+    current = current.parentElement;
+  }
+  return null;
+}
+
 export default function HiddenFooter() {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const scrollEl = document.querySelector<HTMLElement>("[data-scroll-container]");
+    const scrollEl = getScrollEl();
     const el = wrapperRef.current;
     if (!scrollEl || !el) return;
 
@@ -93,6 +133,9 @@ export default function HiddenFooter() {
     };
 
     const handleWheel = (e: WheelEvent) => {
+      if (e.defaultPrevented) return;
+      if (findInternalScrollable(e.target as Element | null, scrollEl)) return;
+
       const { revealStart, maxScroll, height } = getZone();
       if (height === 0 || maxScroll === 0) return;
 
@@ -114,9 +157,11 @@ export default function HiddenFooter() {
       }
     };
 
-    scrollEl.addEventListener("wheel", handleWheel, { passive: false });
+    // Listen on window so wheel events bubble in regardless of which element
+    // actually scrolls (data-scroll-container on home, document elsewhere).
+    window.addEventListener("wheel", handleWheel, { passive: false });
     return () => {
-      scrollEl.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("wheel", handleWheel);
       cancelPull();
       cancelRetract();
     };

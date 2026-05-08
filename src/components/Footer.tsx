@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import FooterSignature from "./FooterSignature";
+import LetterWaveText from "./LetterWaveText";
 import { useHoverLift } from "@/hooks/useHoverLift";
 
 const EMAIL = "venkat.s012002@gmail.com";
@@ -120,7 +121,7 @@ export default function Footer() {
               transition: "filter 0.25s ease, opacity 0.25s ease",
             }}
           >
-            Copy Mail Id
+            <LetterWaveText text="Copy Mail Id" />
           </span>
           <span
             style={{
@@ -149,7 +150,7 @@ export default function Footer() {
   );
 }
 
-function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+function FooterLink({ href, children }: { href: string; children: string }) {
   const lift = useHoverLift();
   return (
     <a
@@ -166,7 +167,7 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
         ...lift.style,
       }}
     >
-      {children}
+      <LetterWaveText text={children} />
     </a>
   );
 }
