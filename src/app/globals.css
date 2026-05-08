@@ -406,56 +406,66 @@
    inline `style={{ cursor: "..." }}` strings via attribute selectors with
    !important so they beat the inline value. ProjectCard's `cursor: "none"`
    path is intentionally not overridden so the portal-cursor still shows. */
-/* PNG sources are 3× exports of the original art. Declared as 4× in
-   image-set() so the displayed CSS size = source / 4 ≈ 0.75× the
-   originals, while the browser still has high-DPI source pixels for
-   crisp retina rendering. Hotspots scaled by 0.75 from the originals. */
-body {
-  cursor: image-set(url('/cursors/main.png') 4x) 1 1, auto;
+/* PNG sources are 48×48 (resized from the original 192×192 — Chrome on
+   macOS silently falls back to the OS cursor when source dimensions
+   exceed ~32–64 px, which was the cause of the flickering). Declared
+   as 2× in image-set() so the displayed CSS size = source / 2 = 24 CSS
+   px, with retina sharpness. Hotspots are in CSS pixels of the
+   displayed cursor (≈24 px square).
+
+   Why `*` instead of `body`: `cursor` is an inherited property, but some
+   user-agent stylesheets and class-based rules (e.g. `.music-knob`) declare
+   their own cursor with higher specificity than the inherited body value,
+   which made the pixel cursor flicker back to the OS default over those
+   regions. The universal selector has specificity (0,0,0) so any specific
+   override below still wins, while UA defaults are now beaten. */
+* {
+  cursor: image-set(url('/cursors/main.png') 2x) 2 2, auto;
 }
 
 [style*="cursor: default"],
 [style*="cursor:default"] {
-  cursor: image-set(url('/cursors/main.png') 4x) 1 1, default !important;
+  cursor: image-set(url('/cursors/main.png') 2x) 2 2, default !important;
 }
 
 a, button, [role="button"], label[for],
 input[type="submit"], input[type="button"],
 input[type="checkbox"], input[type="radio"],
 select, summary,
+.music-knob,
 [style*="cursor: pointer"],
 [style*="cursor:pointer"] {
-  cursor: image-set(url('/cursors/hover.png') 4x) 8 2, pointer !important;
+  cursor: image-set(url('/cursors/hover.png') 2x) 10 4, pointer !important;
 }
 
 [style*="cursor: grab"]:not([style*="grabbing"]),
 [style*="cursor:grab"]:not([style*="grabbing"]) {
-  cursor: image-set(url('/cursors/grab.png') 4x) 9 11, grab !important;
+  cursor: image-set(url('/cursors/grab.png') 2x) 12 12, grab !important;
 }
 
 [style*="cursor: grabbing"],
 [style*="cursor:grabbing"] {
-  cursor: image-set(url('/cursors/grabbing.png') 4x) 9 8, grabbing !important;
+  cursor: image-set(url('/cursors/grabbing.png') 2x) 12 12, grabbing !important;
 }
 
 [style*="cursor: move"],
 [style*="cursor:move"] {
-  cursor: image-set(url('/cursors/move.png') 4x) 11 11, move !important;
+  cursor: image-set(url('/cursors/move.png') 2x) 12 12, move !important;
 }
 
 [style*="cursor: wait"],
 [style*="cursor:wait"] {
-  cursor: image-set(url('/cursors/wait.png') 4x) 8 12, wait !important;
+  cursor: image-set(url('/cursors/wait.png') 2x) 12 12, wait !important;
 }
 
 [style*="cursor: progress"],
 [style*="cursor:progress"] {
-  cursor: image-set(url('/cursors/progress.png') 4x) 1 1, progress !important;
+  cursor: image-set(url('/cursors/progress.png') 2x) 12 12, progress !important;
 }
 
 [style*="cursor: help"],
 [style*="cursor:help"] {
-  cursor: image-set(url('/cursors/help.png') 4x) 1 1, help !important;
+  cursor: image-set(url('/cursors/help.png') 2x) 12 12, help !important;
 }
 
 /* ── Doodles ── */

@@ -1,15 +1,16 @@
-"use client";
-
-import { useState } from "react";
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
-import PixelateSlider from "@/components/PixelateSlider";
 import Separator from "@/components/Separator";
 import CircularSelector from "@/components/CircularSelector";
 import PhotoFrame from "@/components/PhotoFrame";
+import Doodle from "@/components/Doodle";
 
 export default function AboutContent() {
-  const [sliderProgress, setSliderProgress] = useState(0);
+  // Slider was removed (raster image couldn't react to the accent swatch). Doodles
+  // are always visible; only their fill needs to transition with the accent change.
+  const doodleStyle = {
+    transition: "background-color 0.25s ease",
+  } as const;
   return (
     <div
       style={{
@@ -39,6 +40,19 @@ export default function AboutContent() {
           WebkitFontSmoothing: "antialiased",
         }}
       >
+        {/* Main-anchored ambient doodles */}
+        <Doodle
+          src="/svgs/doodles/sun.svg"
+          width={156}
+          height={153}
+          style={{ top: 32, left: 48, ...doodleStyle }}
+        />
+        <Doodle
+          src="/svgs/doodles/huh-cat.svg"
+          width={182}
+          height={228}
+          style={{ top: 60, right: 48, ...doodleStyle }}
+        />
         <div
           style={{
             alignItems: "start",
@@ -62,10 +76,13 @@ export default function AboutContent() {
               gap: 32,
             }}
           >
-          <PixelateSlider
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/about/portrait.png"
             alt="Portrait of Venkat"
-            onProgress={setSliderProgress}
+            width={120}
+            height={144}
+            style={{ display: "block", height: 144, width: 120 }}
           />
 
           <div
@@ -82,13 +99,25 @@ export default function AboutContent() {
               style={{
                 boxSizing: "border-box",
                 color: "#000000",
+                display: "inline-block",
                 fontFamily: "var(--font-heading)",
                 fontSize: 24,
                 fontWeight: 500,
                 lineHeight: "44px",
+                position: "relative",
               }}
             >
               Hey Hii, I&rsquo;m Venkat!
+              <Doodle
+                src="/svgs/doodles/venkat-underline.svg"
+                width={75}
+                height={11}
+                style={{
+                  bottom: -4,
+                  right: 0,
+                  ...doodleStyle,
+                }}
+              />
             </div>
             <div
               style={{
@@ -98,8 +127,32 @@ export default function AboutContent() {
                 display: "flex",
                 flexDirection: "column",
                 gap: 16,
+                position: "relative",
               }}
             >
+              {/* star-1: left of paragraphs, vertically centered, 32px outside the left edge */}
+              <Doodle
+                src="/svgs/doodles/star-1.svg"
+                width={90}
+                height={86}
+                style={{
+                  top: "50%",
+                  left: -(90 + 32),
+                  marginTop: -43,
+                  ...doodleStyle,
+                }}
+              />
+              {/* star-2: bottom-right of paragraphs, 32px outside the right edge */}
+              <Doodle
+                src="/svgs/doodles/star-2.svg"
+                width={90}
+                height={82}
+                style={{
+                  bottom: 0,
+                  right: -(90 + 32),
+                  ...doodleStyle,
+                }}
+              />
               <p
                 style={{
                   alignSelf: "stretch",
@@ -191,7 +244,46 @@ export default function AboutContent() {
           <Separator variant="primary" color="#DDDDDD" />
         </div>
 
-        <CircularSelector />
+        <div
+          style={{
+            alignSelf: "stretch",
+            marginInline: "auto",
+            maxWidth: 720,
+            position: "relative",
+            width: "100%",
+          }}
+        >
+          <CircularSelector />
+          {/*
+            drag: 32px above the lever knob (the only <circle> inside CircularSelector).
+            Lever sits at top: 259, left: -328, size 48×48 within CircularSelector.
+            drag bottom edge = lever top - 32 = 227 → drag top = 227 - 94 = 133.
+            drag horizontally centered on lever center (x = -328 + 24 = -304):
+              drag left = -304 - 60 = -364.
+          */}
+          <Doodle
+            src="/svgs/doodles/drag.svg"
+            width={120}
+            height={94}
+            style={{
+              top: 133,
+              left: -364,
+              ...doodleStyle,
+            }}
+          />
+          {/* yap-yap-yap: right centred, 16px outside the right edge */}
+          <Doodle
+            src="/svgs/doodles/yap-yap-yap.svg"
+            width={245}
+            height={426}
+            style={{
+              top: "50%",
+              right: -261,
+              marginTop: -213,
+              ...doodleStyle,
+            }}
+          />
+        </div>
 
         <div
           style={{
@@ -214,27 +306,50 @@ export default function AboutContent() {
               display: "flex",
               justifyContent: "space-between",
               gap: 16,
+              position: "relative",
             }}
           >
+            {/* photo-frame brackets — scaled 1.125× (0.75× the previous 1.5×), behind the frames */}
+            <Doodle
+              src="/svgs/doodles/photo-frame-brackets.svg"
+              width={802 * 1.125}
+              height={266 * 1.125}
+              style={{
+                top: "50%",
+                left: "50%",
+                marginLeft: -(802 * 1.125) / 2,
+                marginTop: -(266 * 1.125) / 2,
+                zIndex: 0,
+                ...doodleStyle,
+              }}
+            />
             <PhotoFrame frameSrc="/svgs/photo-frame-4.svg" />
             <PhotoFrame frameSrc="/svgs/photo-frame-2.svg" />
             <PhotoFrame frameSrc="/svgs/photo-frame-3.svg" />
             <PhotoFrame frameSrc="/svgs/photo-frame-1.svg" />
           </div>
           <Separator variant="primary" color="#DDDDDD" />
-          <p
-            style={{
-              alignSelf: "stretch",
-              color: "var(--color-neutral-7)",
-              fontFamily: "var(--font-body)",
-              fontSize: 14,
-              lineHeight: "180%",
-              margin: 0,
-            }}
-          >
-            Feel free to reach me via email / Telegram or see more of my work
-            on X(Twittter).
-          </p>
+          <div style={{ alignSelf: "stretch", position: "relative" }}>
+            <Doodle
+              src="/svgs/doodles/arrow-reach-out.svg"
+              width={106}
+              height={40}
+              style={{ top: 0, left: -134, ...doodleStyle }}
+            />
+            <p
+              style={{
+                alignSelf: "stretch",
+                color: "var(--color-neutral-7)",
+                fontFamily: "var(--font-body)",
+                fontSize: 14,
+                lineHeight: "180%",
+                margin: 0,
+              }}
+            >
+              Feel free to reach me via email / Telegram or see more of my work
+              on X(Twittter).
+            </p>
+          </div>
         </div>
       </main>
 
