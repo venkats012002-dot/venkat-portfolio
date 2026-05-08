@@ -19,8 +19,22 @@ const ENGAGE_QUIET_MS = 250;
 const GESTURE_GAP_MS = 120;
 
 function getScrollEl(): HTMLElement | null {
+  // Only treat [data-scroll-container] as the scroll element if it actually
+  // scrolls. On /explorations the container has no overflow; the window scrolls
+  // instead. Using a container whose scrollTop is always 0 makes TopCloud think
+  // we're permanently "at top", so any upward wheel delta mid-page engages the
+  // pull and subsequent down-wheels get preventDefault'd until it drains.
+  const container = document.querySelector<HTMLElement>("[data-scroll-container]");
+  if (container) {
+    const overflowY = window.getComputedStyle(container).overflowY;
+    if (
+      (overflowY === "auto" || overflowY === "scroll") &&
+      container.scrollHeight > container.clientHeight
+    ) {
+      return container;
+    }
+  }
   return (
-    document.querySelector<HTMLElement>("[data-scroll-container]") ||
     (document.scrollingElement as HTMLElement | null) ||
     document.documentElement
   );

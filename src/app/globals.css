@@ -468,6 +468,26 @@ select, summary,
   cursor: image-set(url('/cursors/help.png') 2x) 12 12, help !important;
 }
 
+/* Children of cursor-overriding elements must inherit the parent's cursor.
+   Without this, the universal `*` rule above sets `cursor: main` directly on
+   every descendant, breaking inheritance from `<a>` / `<button>` and making the
+   pixel hover cursor only fire on text-only links (where the hit target is the
+   anchor itself, not a child span). `cursor: inherit !important` re-establishes
+   the parent's value on every descendant. */
+a *, button *, [role="button"] *, label[for] *,
+input[type="submit"] *, input[type="button"] *,
+select *, summary *, .music-knob *,
+[style*="cursor: pointer"] *, [style*="cursor:pointer"] *,
+[style*="cursor: grab"] *, [style*="cursor:grab"] *,
+[style*="cursor: grabbing"] *, [style*="cursor:grabbing"] *,
+[style*="cursor: move"] *, [style*="cursor:move"] *,
+[style*="cursor: wait"] *, [style*="cursor:wait"] *,
+[style*="cursor: progress"] *, [style*="cursor:progress"] *,
+[style*="cursor: help"] *, [style*="cursor:help"] *,
+[style*="cursor: default"] *, [style*="cursor:default"] * {
+  cursor: inherit !important;
+}
+
 /* ── Doodles ── */
 .doodle {
   display: block;
