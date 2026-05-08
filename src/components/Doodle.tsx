@@ -7,6 +7,7 @@ type Props = {
   alt?: string;
   rotate?: number;
   showOnMobile?: boolean;
+  revealed?: boolean;
   style?: CSSProperties;
 };
 
@@ -15,7 +16,8 @@ type Props = {
  * have `position: relative`. The doodle is rendered as a CSS mask over a
  * solid `var(--color-accent-main)` fill, so it tints with the Control
  * Center accent color (the SVGs themselves are monochrome line art).
- * Hidden on mobile by default.
+ * Hidden on mobile by default. `revealed` (default true) controls opacity
+ * with a transition so doodles can fade in based on external state.
  */
 export default function Doodle({
   src,
@@ -24,6 +26,7 @@ export default function Doodle({
   alt = "",
   rotate,
   showOnMobile = false,
+  revealed = true,
   style,
 }: Props) {
   const maskUrl = `url(${src})`;
@@ -40,9 +43,10 @@ export default function Doodle({
         maskPosition: "center",
         maskRepeat: "no-repeat",
         maskSize: "100% 100%",
+        opacity: revealed ? 1 : 0,
         pointerEvents: "none",
         position: "absolute",
-        transition: "background-color 0.25s ease",
+        transition: "background-color 0.25s ease, opacity 0.4s ease",
         userSelect: "none",
         WebkitMaskImage: maskUrl,
         WebkitMaskPosition: "center",

@@ -1,16 +1,21 @@
+"use client";
+
+import { useState } from "react";
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
 import HiddenFooter from "@/components/HiddenFooter";
+import PixelateSlider from "@/components/PixelateSlider";
 import Separator from "@/components/Separator";
 import CircularSelector from "@/components/CircularSelector";
 import PhotoFrame from "@/components/PhotoFrame";
 import Doodle from "@/components/Doodle";
 
 export default function AboutContent() {
-  // Slider was removed (raster image couldn't react to the accent swatch). Doodles
-  // are always visible; only their fill needs to transition with the accent change.
+  const [sliderProgress, setSliderProgress] = useState(0);
+  // Doodles fade in once the slider has been pulled to the very end.
+  const revealed = sliderProgress >= 0.99;
   const doodleStyle = {
-    transition: "background-color 0.25s ease",
+    transition: "background-color 0.25s ease, opacity 0.4s ease",
   } as const;
   return (
     <div
@@ -44,12 +49,14 @@ export default function AboutContent() {
         {/* Main-anchored ambient doodles */}
         <Doodle
           src="/svgs/doodles/sun.svg"
+          revealed={revealed}
           width={156}
           height={153}
           style={{ top: 32, left: 48, ...doodleStyle }}
         />
         <Doodle
           src="/svgs/doodles/huh-cat.svg"
+          revealed={revealed}
           width={182}
           height={228}
           style={{ top: 60, right: 48, ...doodleStyle }}
@@ -77,13 +84,10 @@ export default function AboutContent() {
               gap: 32,
             }}
           >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <PixelateSlider
             src="/about/portrait.png"
             alt="Portrait of Venkat"
-            width={120}
-            height={144}
-            style={{ display: "block", height: 144, width: 120 }}
+            onProgress={setSliderProgress}
           />
 
           <div
@@ -111,6 +115,7 @@ export default function AboutContent() {
               Hey Hii, I&rsquo;m Venkat!
               <Doodle
                 src="/svgs/doodles/venkat-underline.svg"
+          revealed={revealed}
                 width={75}
                 height={11}
                 style={{
@@ -134,6 +139,7 @@ export default function AboutContent() {
               {/* star-1: left of paragraphs, vertically centered, 32px outside the left edge */}
               <Doodle
                 src="/svgs/doodles/star-1.svg"
+          revealed={revealed}
                 width={90}
                 height={86}
                 style={{
@@ -146,6 +152,7 @@ export default function AboutContent() {
               {/* star-2: bottom-right of paragraphs, 32px outside the right edge */}
               <Doodle
                 src="/svgs/doodles/star-2.svg"
+          revealed={revealed}
                 width={90}
                 height={82}
                 style={{
@@ -264,6 +271,7 @@ export default function AboutContent() {
           */}
           <Doodle
             src="/svgs/doodles/drag.svg"
+          revealed={revealed}
             width={120}
             height={94}
             style={{
@@ -275,6 +283,7 @@ export default function AboutContent() {
           {/* yap-yap-yap: right centred, 16px outside the right edge */}
           <Doodle
             src="/svgs/doodles/yap-yap-yap.svg"
+          revealed={revealed}
             width={245}
             height={426}
             style={{
@@ -313,6 +322,7 @@ export default function AboutContent() {
             {/* photo-frame brackets — scaled 1.125× (0.75× the previous 1.5×), behind the frames */}
             <Doodle
               src="/svgs/doodles/photo-frame-brackets.svg"
+          revealed={revealed}
               width={802 * 1.125}
               height={266 * 1.125}
               style={{
@@ -324,15 +334,24 @@ export default function AboutContent() {
                 ...doodleStyle,
               }}
             />
-            <PhotoFrame frameSrc="/svgs/photo-frame-4.svg" />
-            <PhotoFrame frameSrc="/svgs/photo-frame-2.svg" />
-            <PhotoFrame frameSrc="/svgs/photo-frame-3.svg" />
-            <PhotoFrame frameSrc="/svgs/photo-frame-1.svg" />
+            <PhotoFrame frameSrc="/svgs/photo-frame-4.svg">
+              <Doodle src="/svgs/doodles/frame-doodle-1.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+            </PhotoFrame>
+            <PhotoFrame frameSrc="/svgs/photo-frame-2.svg">
+              <Doodle src="/svgs/doodles/frame-doodle-2.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+            </PhotoFrame>
+            <PhotoFrame frameSrc="/svgs/photo-frame-3.svg">
+              <Doodle src="/svgs/doodles/frame-doodle-3.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+            </PhotoFrame>
+            <PhotoFrame frameSrc="/svgs/photo-frame-1.svg">
+              <Doodle src="/svgs/doodles/frame-doodle-4.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+            </PhotoFrame>
           </div>
           <Separator variant="primary" color="#DDDDDD" />
           <div style={{ alignSelf: "stretch", position: "relative" }}>
             <Doodle
               src="/svgs/doodles/arrow-reach-out.svg"
+          revealed={revealed}
               width={106}
               height={40}
               style={{ top: 0, left: -134, ...doodleStyle }}
