@@ -2,6 +2,7 @@
 
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
+import HiddenFooter from "@/components/HiddenFooter";
 import SidesList from "@/components/SidesList";
 import type { Side } from "@/components/SideItem";
 
@@ -109,6 +110,7 @@ export default function SidesContent({ items }: { items: Side[] }) {
       </main>
 
       <Footer />
+      <HiddenFooter />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
+import HiddenFooter from "@/components/HiddenFooter";
 import PixelBlobField from "@/components/PixelBlobField";
 
 type Inspiration = { name: string; label: string; href?: string };
@@ -105,6 +106,7 @@ export default function InspirationsPage() {
       </main>
 
       <Footer />
+      <HiddenFooter />
     </div>
   );
 }

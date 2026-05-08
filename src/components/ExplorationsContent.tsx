@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
+import HiddenFooter from "@/components/HiddenFooter";
 import ExplorationsViewToggle, {
   type ExplorationsView,
 } from "@/components/ExplorationsViewToggle";
@@ -68,6 +69,7 @@ export default function ExplorationsContent({ items }: { items: Exploration[] })
       </main>
 
       <Footer />
+      <HiddenFooter />
     </div>
   );
 }

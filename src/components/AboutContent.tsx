@@ -1,5 +1,6 @@
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
+import HiddenFooter from "@/components/HiddenFooter";
 import Separator from "@/components/Separator";
 import CircularSelector from "@/components/CircularSelector";
 import PhotoFrame from "@/components/PhotoFrame";
@@ -354,6 +355,7 @@ export default function AboutContent() {
       </main>
 
       <Footer />
+      <HiddenFooter />
     </div>
   );
 }

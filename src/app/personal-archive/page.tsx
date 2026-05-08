@@ -1,5 +1,6 @@
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
+import HiddenFooter from "@/components/HiddenFooter";
 import Separator from "@/components/Separator";
 import PersonalArchiveLogo from "@/components/PersonalArchiveLogo";
 import { fetchArchiveEntries, type ArchiveEntry } from "@/lib/notion";
@@ -117,6 +118,7 @@ export default async function PersonalArchivePage() {
       </main>
 
       <Footer />
+      <HiddenFooter />
     </div>
   );
 }
