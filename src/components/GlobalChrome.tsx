@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import AccentBridge from "./AccentBridge";
 import AccentShortcuts from "./AccentShortcuts";
 import DiscoMode from "./DiscoMode";
@@ -10,6 +12,12 @@ import { useControlCenter, closeControlCenter } from "@/hooks/useControlCenter";
 
 export default function GlobalChrome() {
   const open = useControlCenter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    closeControlCenter();
+  }, [pathname]);
+
   return (
     <>
       <AccentBridge />

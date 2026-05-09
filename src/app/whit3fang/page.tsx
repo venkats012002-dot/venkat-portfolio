@@ -32,7 +32,7 @@ export default function Whit3fangPage() {
   const currentFrameRef = useRef(0);
   const isDeadRef = useRef(false);
   const isVibingRef = useRef(false);
-  const isMutedRef = useRef(false);
+  const isMutedRef = useRef(true);
   const poisonStageRef = useRef(0);
 
   const switchStateRef = useRef<(name: string, opts?: SwitchOpts) => void>(() => {});
@@ -40,7 +40,7 @@ export default function Whit3fangPage() {
   const [poisonLabel, setPoisonLabel] = useState("Not for Feeding");
   const [poisonIcon, setPoisonIcon] = useState("/whit3fang/Poison.svg");
   const [showMute, setShowMute] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
