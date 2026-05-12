@@ -5,6 +5,9 @@ const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const archiveNotion = new Client({
   auth: process.env.NOTION_ARCHIVE_TOKEN ?? process.env.NOTION_TOKEN,
 });
+const workNotion = new Client({
+  auth: process.env.NOTION_WORK_TOKEN ?? process.env.NOTION_TOKEN,
+});
 const envId = process.env.NOTION_EXPLORATIONS_DB_ID;
 
 type AnyProp = { type?: string } & Record<string, unknown>;
@@ -33,6 +36,13 @@ function getSelect(prop: unknown): string | null {
   const p = prop as AnyProp;
   if (p?.type !== "select") return null;
   return (p as { select: { name: string } | null }).select?.name ?? null;
+}
+
+function getMultiSelect(prop: unknown): string[] {
+  const p = prop as AnyProp;
+  if (p?.type !== "multi_select") return [];
+  return (p as { multi_select: Array<{ name: string }> }).multi_select
+    ?.map((t) => t.name) ?? [];
 }
 
 function getRichText(prop: unknown): string {
@@ -205,5 +215,215 @@ export async function fetchArchiveEntries(): Promise<ArchiveEntry[]> {
   } catch (err) {
     console.error("[notion] archive fetch failed:", err);
     return [];
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Work / Case Studies + Sides
+// ─────────────────────────────────────────────────────────────────────────
+
+const workDbId = process.env.NOTION_WORK_DB_ID;
+
+export type WorkBlock =
+  | { type: "heading_1" | "heading_2" | "heading_3" | "heading_4"; text: string }
+  | { type: "paragraph"; text: string }
+  | { type: "image"; src: string; caption: string }
+  | { type: "video"; src: string }
+  | { type: "divider" }
+  | { type: "quote"; text: string }
+  | { type: "callout"; text: string; emoji: string | null; children: WorkBlock[] }
+  | { type: "bullet" | "number"; text: string }
+  | { type: "spacer" };
+
+export type WorkSummary = {
+  id: string;
+  slug: string;
+  type: string | null;
+  status: string | null;
+  order: number | null;
+  title: string;
+  subtitle: string;
+  timeline: string;
+  role: string;
+  tags: string[];
+  cover: string | null;
+};
+
+export type WorkDetail = WorkSummary & {
+  body: WorkBlock[];
+};
+
+// Notion stores slug values like "/work/bluethroat-branding" or "bluethroat-branding".
+// Normalize to just the last path segment so the dynamic route can match cleanly.
+function normalizeSlug(s: string): string {
+  return s.replace(/^.*\//, "").trim();
+}
+
+// URL-encode the path of a URL (handles spaces in filenames from Notion).
+function encodeUrl(raw: string): string {
+  if (!raw) return raw;
+  try {
+    const u = new URL(raw);
+    u.pathname = u.pathname.split("/").map((seg) => encodeURIComponent(decodeURIComponent(seg))).join("/");
+    return u.toString();
+  } catch {
+    return raw;
+  }
+}
+
+const IMAGE_EXT_RE = /\.(png|jpe?g|gif|webp|svg|avif)(\?.*)?$/i;
+const VIDEO_EXT_RE = /\.(mp4|webm|mov|m4v)(\?.*)?$/i;
+
+function richTextOf(rt: Array<{ plain_text: string }> | undefined): string {
+  return rt?.map((t) => t.plain_text).join("") ?? "";
+}
+
+// SDK's discriminated types are noisy; we treat the raw block as a loose
+// record and only read the fields we need.
+type RawBlock = { id: string; type: string; has_children: boolean; [k: string]: unknown };
+
+async function mapBlock(raw: RawBlock): Promise<WorkBlock | null> {
+  const b = raw as unknown as Record<string, { rich_text?: Array<{ plain_text: string }> } & Record<string, unknown>> & RawBlock;
+  const t = raw.type;
+  if (t === "heading_1" || t === "heading_2" || t === "heading_3" || t === "heading_4") {
+    return { type: t, text: richTextOf(b[t]?.rich_text) };
+  }
+  if (t === "paragraph") {
+    const text = richTextOf(b.paragraph?.rich_text);
+    const trimmed = text.trim();
+    if (!trimmed) return { type: "spacer" };
+    if (/^https?:\/\//i.test(trimmed) && IMAGE_EXT_RE.test(trimmed)) {
+      return { type: "image", src: encodeUrl(trimmed), caption: "" };
+    }
+    if (/^https?:\/\//i.test(trimmed) && VIDEO_EXT_RE.test(trimmed)) {
+      return { type: "video", src: encodeUrl(trimmed) };
+    }
+    return { type: "paragraph", text };
+  }
+  if (t === "image") {
+    const img = b.image as { external?: { url: string }; file?: { url: string }; caption?: Array<{ plain_text: string }> } | undefined;
+    const src = img?.external?.url ?? img?.file?.url ?? "";
+    const caption = richTextOf(img?.caption);
+    return src ? { type: "image", src: encodeUrl(src), caption } : null;
+  }
+  if (t === "video") {
+    const v = b.video as { external?: { url: string }; file?: { url: string } } | undefined;
+    const src = v?.external?.url ?? v?.file?.url ?? "";
+    return src ? { type: "video", src: encodeUrl(src) } : null;
+  }
+  if (t === "divider") return { type: "divider" };
+  if (t === "quote") {
+    return { type: "quote", text: richTextOf(b.quote?.rich_text) };
+  }
+  if (t === "callout") {
+    const data = b.callout as { rich_text?: Array<{ plain_text: string }>; icon?: { type?: string; emoji?: string } | null } | undefined;
+    const emoji = data?.icon?.type === "emoji" ? (data.icon.emoji ?? null) : null;
+    const text = richTextOf(data?.rich_text);
+    const children = raw.has_children ? await fetchPageBlocks(raw.id) : [];
+    return { type: "callout", text, emoji, children };
+  }
+  if (t === "bulleted_list_item") {
+    return { type: "bullet", text: richTextOf(b.bulleted_list_item?.rich_text) };
+  }
+  if (t === "numbered_list_item") {
+    return { type: "number", text: richTextOf(b.numbered_list_item?.rich_text) };
+  }
+  return null;
+}
+
+async function fetchPageBlocks(pageId: string): Promise<WorkBlock[]> {
+  const out: WorkBlock[] = [];
+  let cursor: string | undefined;
+  do {
+    const res = await workNotion.blocks.children.list({
+      block_id: pageId,
+      start_cursor: cursor,
+    });
+    for (const b of res.results) {
+      const block = await mapBlock(b as unknown as RawBlock);
+      if (block) out.push(block);
+    }
+    cursor = (res as { next_cursor: string | null }).next_cursor ?? undefined;
+  } while (cursor);
+  return out;
+}
+
+function rowToSummary(row: { id: string; properties: Record<string, unknown> }): WorkSummary {
+  const props = row.properties;
+  const cover = getRichText(findProp(props, "Cover")).trim();
+  return {
+    id: row.id,
+    slug: normalizeSlug(getRichText(findProp(props, "Slug"))),
+    type: getSelect(findProp(props, "Type")),
+    status: getSelect(findProp(props, "Status")),
+    order: getNumber(findProp(props, "Order")),
+    title:
+      getTitle(findProp(props, "Name")) ||
+      getTitle(findProp(props, "Title")) ||
+      getTitle(findTitleProp(props)) ||
+      "Untitled",
+    subtitle: getRichText(findProp(props, "Subtitle")),
+    timeline: getRichText(findProp(props, "Timeline")),
+    role: getRichText(findProp(props, "Role")),
+    tags: getMultiSelect(findProp(props, "Tags")),
+    cover: cover ? encodeUrl(cover) : null,
+  };
+}
+
+export async function fetchWorkList(typeFilter?: "case-study" | "side"): Promise<WorkSummary[]> {
+  if (!process.env.NOTION_WORK_TOKEN || !workDbId) {
+    console.warn("[notion] NOTION_WORK_TOKEN or NOTION_WORK_DB_ID missing");
+    return [];
+  }
+  try {
+    const dataSourceId = await resolveDataSourceId(workDbId, workNotion);
+    if (!dataSourceId) {
+      console.warn("[notion] could not resolve a data source from id:", workDbId);
+      return [];
+    }
+
+    const response = await workNotion.dataSources.query({
+      data_source_id: dataSourceId,
+      sorts: [{ property: "Order", direction: "ascending" }],
+    });
+
+    const items = response.results
+      .filter((r): r is Extract<typeof r, { properties: unknown }> => "properties" in r)
+      .map((row) => rowToSummary(row as { id: string; properties: Record<string, unknown> }));
+
+    if (!typeFilter) return items;
+    const target = typeFilter.toLowerCase();
+    return items.filter((i) => (i.type ?? "").toLowerCase().replace(/\s+/g, "-") === target);
+  } catch (err) {
+    console.error("[notion] work list failed:", err);
+    return [];
+  }
+}
+
+export async function fetchWorkBySlug(slug: string): Promise<WorkDetail | null> {
+  if (!process.env.NOTION_WORK_TOKEN || !workDbId) return null;
+  try {
+    const dataSourceId = await resolveDataSourceId(workDbId, workNotion);
+    if (!dataSourceId) return null;
+
+    const response = await workNotion.dataSources.query({
+      data_source_id: dataSourceId,
+    });
+
+    const target = normalizeSlug(slug);
+    const row = response.results
+      .filter((r): r is Extract<typeof r, { properties: unknown }> => "properties" in r)
+      .find((r) => {
+        const props = (r as { properties: Record<string, unknown> }).properties;
+        return normalizeSlug(getRichText(findProp(props, "Slug"))) === target;
+      });
+
+    if (!row) return null;
+    const summary = rowToSummary(row as { id: string; properties: Record<string, unknown> });
+    const body = await fetchPageBlocks(row.id);
+    return { ...summary, body };
+  } catch (err) {
+    console.error("[notion] work detail failed:", err);
+    return null;
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -8,9 +9,10 @@ type Props = {
   tags: string[];
   title: string;
   description: string;
+  href?: string;
 };
 
-export default function ProjectCard({ image, tags, title, description }: Props) {
+export default function ProjectCard({ image, tags, title, description, href }: Props) {
   const [hovered, setHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [supportsHover, setSupportsHover] = useState(true);
@@ -43,25 +45,32 @@ export default function ProjectCard({ image, tags, title, description }: Props) 
     }
   };
 
-  return (
-    <article
-      onMouseEnter={supportsHover ? (e) => {
-        trackPointer(e);
-        setHovered(true);
-      } : undefined}
-      onMouseLeave={supportsHover ? () => setHovered(false) : undefined}
-      onMouseMove={supportsHover ? trackPointer : undefined}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        alignSelf: "stretch",
-        gap: "16px",
-        cursor: supportsHover && hovered ? "none" : "default",
-        opacity: supportsHover && hovered ? 0.8 : 1,
-        transition: "opacity 0.25s ease",
-      }}
-    >
+  const containerStyle = {
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "stretch",
+    alignSelf: "stretch",
+    gap: "16px",
+    cursor: supportsHover && hovered ? "none" : "default",
+    opacity: supportsHover && hovered ? 0.8 : 1,
+    transition: "opacity 0.25s ease",
+    color: "inherit",
+    textDecoration: "none",
+  } as const;
+
+  const handlers = supportsHover
+    ? {
+        onMouseEnter: (e: React.MouseEvent) => {
+          trackPointer(e);
+          setHovered(true);
+        },
+        onMouseLeave: () => setHovered(false),
+        onMouseMove: trackPointer,
+      }
+    : {};
+
+  const inner = (
+    <>
       <div
         role="img"
         aria-label={title}
@@ -179,6 +188,16 @@ export default function ProjectCard({ image, tags, title, description }: Props) 
           </div>,
           document.body
         )}
+    </>
+  );
+
+  return href ? (
+    <Link href={href} style={containerStyle} {...handlers}>
+      {inner}
+    </Link>
+  ) : (
+    <article style={containerStyle} {...handlers}>
+      {inner}
     </article>
   );
 }

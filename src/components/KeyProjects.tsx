@@ -8,6 +8,7 @@ const PROJECTS = [
     title: "Branding for Bluethroat Labs",
     description:
       "Led end-to-end brand creation for Bluethroat Labs, from identity to web. Designed and built custom tools leveraging programmable design (WebGL-based controls and dynamic report generation) to automate and scale brand consistency.",
+    href: "/work/bluethroat-branding",
   },
   {
     image: "/projects/quillaudits-leaderboard.png",

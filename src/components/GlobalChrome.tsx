@@ -18,13 +18,17 @@ export default function GlobalChrome() {
     closeControlCenter();
   }, [pathname]);
 
+  // Case study pages (`/work/*`) opt out of the top quote-cloud — they have
+  // their own focused chrome (sticky sidebar + footer only).
+  const showTopCloud = !pathname?.startsWith("/work/");
+
   return (
     <>
       <AccentBridge />
       <AccentShortcuts />
       <DiscoMode />
       <ClickBurst />
-      <TopCloud />
+      {showTopCloud && <TopCloud />}
       <ControlCenter open={open} onClose={closeControlCenter} />
     </>
   );
