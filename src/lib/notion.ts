@@ -245,6 +245,8 @@ export type WorkSummary = {
   subtitle: string;
   timeline: string;
   role: string;
+  stats: string;
+  team: string;
   tags: string[];
   cover: string | null;
 };
@@ -365,6 +367,8 @@ function rowToSummary(row: { id: string; properties: Record<string, unknown> }):
     subtitle: getRichText(findProp(props, "Subtitle")),
     timeline: getRichText(findProp(props, "Timeline")),
     role: getRichText(findProp(props, "Role")),
+    stats: getRichText(findProp(props, "Stats")),
+    team: getRichText(findProp(props, "Team")),
     tags: getMultiSelect(findProp(props, "Tags")),
     cover: cover ? encodeUrl(cover) : null,
   };

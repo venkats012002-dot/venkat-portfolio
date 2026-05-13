@@ -172,9 +172,19 @@ function Hero({ data }: { data: WorkDetail }) {
         >
           {data.title}
         </h1>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {data.role && <span style={metaStyle}>Role: {data.role}</span>}
-          {data.timeline && <span style={metaStyle}>Timeline: {data.timeline}</span>}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {(data.role || data.timeline) && (
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              {data.role && <span style={metaStyle}>Role: {data.role}</span>}
+              {data.timeline && <span style={metaStyle}>Timeline: {data.timeline}</span>}
+            </div>
+          )}
+          {(data.stats || data.team) && (
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              {data.stats && <span style={metaStyle}>Stats: {data.stats}</span>}
+              {data.team && <span style={metaStyle}>Team: {data.team}</span>}
+            </div>
+          )}
         </div>
       </div>
 
