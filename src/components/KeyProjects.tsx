@@ -1,7 +1,17 @@
 import Separator from "./Separator";
 import ProjectCard from "./ProjectCard";
 
-const PROJECTS = [
+export type KeyProject = {
+  image: string;
+  tags: string[];
+  title: string;
+  description: string;
+  href?: string;
+};
+
+// Fallback list shown when the Notion fetch returns nothing (graceful
+// degradation if the integration is down or env vars are missing).
+const FALLBACK_PROJECTS: KeyProject[] = [
   {
     image: "/projects/bluethroat-branding.png",
     tags: ["Visual Design", "Branding", "Custom AI Tools"],
@@ -26,7 +36,8 @@ const PROJECTS = [
   },
 ];
 
-export default function KeyProjects() {
+export default function KeyProjects({ projects }: { projects?: KeyProject[] }) {
+  const items = projects && projects.length > 0 ? projects : FALLBACK_PROJECTS;
   return (
     <section
       id="keyprojects"
@@ -67,7 +78,7 @@ export default function KeyProjects() {
         <Separator variant="primary" />
       </div>
 
-      {PROJECTS.map((p) => (
+      {items.map((p) => (
         <ProjectCard key={p.title} {...p} />
       ))}
     </section>
