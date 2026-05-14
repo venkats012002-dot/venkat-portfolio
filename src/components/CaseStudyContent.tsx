@@ -8,8 +8,14 @@ import CaseStudySidebar, { type SidebarItem } from "./CaseStudySidebar";
 import MediaLightbox, { type LightboxMedia } from "./MediaLightbox";
 import type { WorkBlock, WorkDetail, WorkSummary } from "@/lib/notion";
 
+const CAROUSEL_EMOJI = "🎠";
+
 function slugify(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "section";
+}
+
+function isCarouselCallout(b: WorkBlock): boolean {
+  return b.type === "callout" && b.emoji === CAROUSEL_EMOJI;
 }
 
 type Section = {
@@ -27,7 +33,8 @@ function groupSections(blocks: WorkBlock[]): { intro: WorkBlock[]; sections: Sec
   let current: Section | null = null;
 
   for (const b of blocks) {
-    const isHeader = b.type === "heading_1" || b.type === "callout";
+    const isHeader =
+      b.type === "heading_1" || (b.type === "callout" && !isCarouselCallout(b));
     if (isHeader) {
       const title = b.type === "callout" ? b.text : b.text;
       current = {
@@ -323,6 +330,9 @@ function BlockRender({ block, onOpenMedia }: { block: WorkBlock; onOpenMedia: Op
     case "spacer":
       return <div style={{ height: 8 }} />;
     case "callout":
+      if (block.emoji === CAROUSEL_EMOJI) {
+        return <Carousel items={block.children} onOpenMedia={onOpenMedia} />;
+      }
       return <>{renderBlocks(block.children, onOpenMedia)}</>;
     case "heading_1":
       return <SubHeading size={18}>{block.text}</SubHeading>;
@@ -441,6 +451,151 @@ function NextProjectLink({ item }: { item: WorkSummary }) {
     <div style={{ paddingLeft: 8 }}>
       <PlayButton label={item.title} href={`/work/${item.slug}`} />
     </div>
+  );
+}
+
+type CarouselSlide = Extract<WorkBlock, { type: "image" } | { type: "video" }>;
+
+function Carousel({
+  items,
+  onOpenMedia,
+}: {
+  items: WorkBlock[];
+  onOpenMedia: OpenMedia;
+}) {
+  const slides = useMemo(
+    () => items.filter((b): b is CarouselSlide => b.type === "image" || b.type === "video"),
+    [items],
+  );
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (idx > slides.length - 1) setIdx(0);
+  }, [slides.length, idx]);
+
+  if (slides.length === 0) return null;
+  const current = slides[idx]!;
+  const canPrev = idx > 0;
+  const canNext = idx < slides.length - 1;
+
+  return (
+    <div style={{ alignSelf: "stretch", display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ alignItems: "center", display: "flex", gap: 24 }}>
+        <CarouselArrow
+          side="left"
+          active={canPrev}
+          onClick={() => setIdx((i) => Math.max(0, i - 1))}
+        />
+        <div
+          onClick={() => onOpenMedia(current.src, current.type)}
+          style={{
+            aspectRatio: "16 / 9",
+            backgroundColor: "var(--color-neutral-3)",
+            cursor: "pointer",
+            flex: 1,
+            overflow: "clip",
+            position: "relative",
+          }}
+        >
+          {current.type === "image" ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={current.src}
+              src={current.src}
+              alt={current.caption || ""}
+              loading="lazy"
+              style={{
+                display: "block",
+                height: "100%",
+                objectFit: "cover",
+                width: "100%",
+              }}
+            />
+          ) : (
+            <video
+              key={current.src}
+              src={current.src}
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                display: "block",
+                height: "100%",
+                objectFit: "cover",
+                width: "100%",
+              }}
+            />
+          )}
+        </div>
+        <CarouselArrow
+          side="right"
+          active={canNext}
+          onClick={() => setIdx((i) => Math.min(slides.length - 1, i + 1))}
+        />
+      </div>
+      {slides.length > 1 && (
+        <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === idx}
+              onClick={() => setIdx(i)}
+              style={{
+                background:
+                  i === idx ? "var(--color-neutral-dark)" : "var(--color-neutral-4)",
+                border: "none",
+                cursor: "pointer",
+                height: 8,
+                padding: 0,
+                transition: "background-color 0.2s ease",
+                width: 8,
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CarouselArrow({
+  side,
+  active,
+  onClick,
+}: {
+  side: "left" | "right";
+  active: boolean;
+  onClick: () => void;
+}) {
+  const src = side === "left" ? "/icons/sides-left.svg" : "/icons/sides-right.svg";
+  return (
+    <button
+      type="button"
+      onClick={active ? onClick : undefined}
+      disabled={!active}
+      aria-label={side === "left" ? "Previous slide" : "Next slide"}
+      style={{
+        background: "none",
+        border: "none",
+        cursor: active ? "pointer" : "default",
+        flexShrink: 0,
+        opacity: active ? 1 : 0.4,
+        padding: 0,
+        transition: "opacity 0.2s ease",
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt=""
+        width={12}
+        height={24}
+        style={{ display: "block", imageRendering: "pixelated" }}
+      />
+    </button>
   );
 }
 
