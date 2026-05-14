@@ -13,7 +13,7 @@ const textStyle: React.CSSProperties = {
 };
 
 const DISCIPLINES: { label: string; left: number; top: number }[] = [
-  { label: "Creative Coding", left: -56, top: -41 },
+  { label: "Product Design", left: -56, top: -41 },
   { label: "Systems Thinking", left: 209, top: -41 },
   { label: "Motion", left: -39, top: 62 },
   { label: "Visual Design", left: 142, top: 70 },

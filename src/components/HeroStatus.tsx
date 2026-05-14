@@ -55,7 +55,7 @@ const items: { color: string; content: React.ReactNode }[] = [
   {
     color: "#F01D25",
     content: (
-      <>Founding brand designer for <a href="https://www.bluethroatlabs.com" target="_blank" rel="noreferrer" className="hero-status-link" style={linkStyle}>Bluethroat Labs<span aria-hidden className="hero-status-link__tip"><BluethroatLabsTip /></span></a></>
+      <>Founding brand designer – <a href="https://www.bluethroatlabs.com" target="_blank" rel="noreferrer" className="hero-status-link" style={linkStyle}>Bluethroat Labs<span aria-hidden className="hero-status-link__tip"><BluethroatLabsTip /></span></a></>
     ),
   },
   {
