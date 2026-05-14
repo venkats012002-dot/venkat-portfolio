@@ -158,6 +158,110 @@ function labelFontSize(absFrac: number): number {
   return lerp(16, 14, Math.min(1, absFrac));
 }
 
+export function MobileCircularSelector() {
+  const [activeIdx, setActiveIdx] = useState(2);
+  const activeCat = CATEGORIES[activeIdx];
+  return (
+    <div
+      style={{
+        alignSelf: "stretch",
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+      }}
+    >
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+        {CATEGORIES.map((cat, i) => {
+          const active = i === activeIdx;
+          return (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setActiveIdx(i)}
+              aria-pressed={active}
+              style={{
+                alignItems: "center",
+                background: "none",
+                border: "none",
+                boxSizing: "border-box",
+                cursor: "pointer",
+                display: "flex",
+                gap: 8,
+                outline: "none",
+                padding: 0,
+              }}
+            >
+              <span
+                aria-hidden
+                style={{
+                  backgroundColor: "var(--color-neutral-dark)",
+                  flexShrink: 0,
+                  height: 12,
+                  opacity: active ? 1 : 0,
+                  transition: "opacity 0.2s ease",
+                  width: 12,
+                }}
+              />
+              <span
+                style={{
+                  color: active
+                    ? "var(--color-neutral-dark)"
+                    : "var(--color-neutral-7)",
+                  fontFamily: "var(--font-body)",
+                  fontSize: 14,
+                  lineHeight: "21px",
+                  transition: "color 0.2s ease",
+                }}
+              >
+                {cat.title}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      <div
+        style={{
+          alignSelf: "stretch",
+          borderColor: "#DDDDDD",
+          borderStyle: "solid",
+          borderWidth: 1,
+          boxSizing: "border-box",
+          display: "flex",
+          flexDirection: "column",
+          gap: 24,
+          paddingBlock: 16,
+          paddingInline: 16,
+        }}
+      >
+        <div
+          style={{
+            color: "#101010",
+            fontFamily: "var(--font-body)",
+            fontSize: 18,
+            lineHeight: "32px",
+          }}
+        >
+          {activeCat.panelTitle ?? activeCat.title}
+        </div>
+        {typeof activeCat.body === "string" ? (
+          <div
+            style={{
+              color: "#7A7A7A",
+              fontFamily: "var(--font-body)",
+              fontSize: 14,
+              lineHeight: "21px",
+            }}
+          >
+            {activeCat.body}
+          </div>
+        ) : (
+          activeCat.body
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function CircularSelector() {
   const [activeIdx, setActiveIdx] = useState(2);
   const [dragShift, setDragShift] = useState(0);

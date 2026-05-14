@@ -302,6 +302,13 @@
     padding-right: 4px;
   }
 
+  /* /about page mobile pass */
+  .about-main {
+    padding-block: 96px 48px !important;
+    padding-inline: 16px !important;
+    gap: 48px !important;
+  }
+
   /* Testimonials: any inline fixed-width child collapses to fill the section */
   section[data-section-index="3"] [style*="width: 720px"],
   section[data-section-index="3"] [style*="width:720px"],
@@ -537,6 +544,30 @@ select *, summary *, .music-knob *,
   .hero-status-link:hover .hero-status-link__tip {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ── About frames marquee (mobile-only — rendered conditionally in AboutContent) ──
+   8 PhotoFrames in a flex row, looped left-to-right. Translation is
+   -(4 × frame + 4 × gap) = -(4 × 169 + 4 × 16) = -740px so the wrap point
+   lines set 2 frame 1 directly under set 1 frame 1 for a seamless cycle. */
+.about-frames-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+.about-frames-marquee-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: about-frames-marquee 20s linear infinite;
+}
+@keyframes about-frames-marquee {
+  from { transform: translateX(-740px); }
+  to   { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-frames-marquee-track {
+    animation: none;
   }
 }
 

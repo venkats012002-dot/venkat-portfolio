@@ -1,17 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
 import HiddenFooter from "@/components/HiddenFooter";
 import PixelateSlider from "@/components/PixelateSlider";
 import Separator from "@/components/Separator";
-import CircularSelector from "@/components/CircularSelector";
+import CircularSelector, { MobileCircularSelector } from "@/components/CircularSelector";
 import PhotoFrame from "@/components/PhotoFrame";
 import Doodle from "@/components/Doodle";
 
 export default function AboutContent() {
   const [sliderProgress, setSliderProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
   // Doodles fade in once the slider has been pulled to the very end.
   const revealed = sliderProgress >= 0.99;
   const doodleStyle = {
@@ -30,6 +39,7 @@ export default function AboutContent() {
       <MobileNavWithSidebar />
 
       <main
+        className="about-main"
         style={{
           alignItems: "center",
           alignSelf: "stretch",
@@ -261,7 +271,7 @@ export default function AboutContent() {
             width: "100%",
           }}
         >
-          <CircularSelector />
+          {isMobile ? <MobileCircularSelector /> : <CircularSelector />}
           {/*
             drag: 32px above the lever knob (the only <circle> inside CircularSelector).
             Lever sits at top: 259, left: -328, size 48×48 within CircularSelector.
@@ -334,18 +344,39 @@ export default function AboutContent() {
                 ...doodleStyle,
               }}
             />
-            <PhotoFrame frameSrc="/svgs/photo-frame-4.svg">
-              <Doodle src="/svgs/doodles/frame-doodle-1.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
-            </PhotoFrame>
-            <PhotoFrame frameSrc="/svgs/photo-frame-2.svg">
-              <Doodle src="/svgs/doodles/frame-doodle-2.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
-            </PhotoFrame>
-            <PhotoFrame frameSrc="/svgs/photo-frame-3.svg">
-              <Doodle src="/svgs/doodles/frame-doodle-3.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
-            </PhotoFrame>
-            <PhotoFrame frameSrc="/svgs/photo-frame-1.svg">
-              <Doodle src="/svgs/doodles/frame-doodle-4.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
-            </PhotoFrame>
+            {isMobile ? (
+              <div className="about-frames-marquee">
+                <div className="about-frames-marquee-track" aria-label="Photo frames">
+                  {[0, 1].map((copy) => (
+                    <div
+                      key={copy}
+                      aria-hidden={copy === 1 ? true : undefined}
+                      style={{ display: "flex", gap: 16, flexShrink: 0 }}
+                    >
+                      <PhotoFrame frameSrc="/svgs/photo-frame-4.svg" />
+                      <PhotoFrame frameSrc="/svgs/photo-frame-2.svg" />
+                      <PhotoFrame frameSrc="/svgs/photo-frame-3.svg" />
+                      <PhotoFrame frameSrc="/svgs/photo-frame-1.svg" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
+                <PhotoFrame frameSrc="/svgs/photo-frame-4.svg">
+                  <Doodle src="/svgs/doodles/frame-doodle-1.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+                </PhotoFrame>
+                <PhotoFrame frameSrc="/svgs/photo-frame-2.svg">
+                  <Doodle src="/svgs/doodles/frame-doodle-2.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+                </PhotoFrame>
+                <PhotoFrame frameSrc="/svgs/photo-frame-3.svg">
+                  <Doodle src="/svgs/doodles/frame-doodle-3.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+                </PhotoFrame>
+                <PhotoFrame frameSrc="/svgs/photo-frame-1.svg">
+                  <Doodle src="/svgs/doodles/frame-doodle-4.svg" width={169} height={191} revealed={revealed} style={{ top: 0, left: 0, zIndex: 2 }} />
+                </PhotoFrame>
+              </>
+            )}
           </div>
           <Separator variant="primary" color="#DDDDDD" />
           <div style={{ alignSelf: "stretch", position: "relative" }}>
