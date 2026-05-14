@@ -19,6 +19,10 @@ import ProgressiveBlur from "@/components/ProgressiveBlur";
 // reset on hard reload (loader reruns). No sessionStorage — we *want* reload to show it.
 let hasShownLoader = false;
 
+// Same gate as /sides: visible in `next dev`, hidden on every Vercel build until
+// the Sides content is ready.
+const SHOW_SIDES_SECTION = process.env.NODE_ENV === "development";
+
 export default function HomeClient({ projects }: { projects: KeyProject[] }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLoader, setShowLoader] = useState(() => !hasShownLoader);
@@ -64,7 +68,7 @@ export default function HomeClient({ projects }: { projects: KeyProject[] }) {
           <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
           <Hero />
           <KeyProjects projects={projects} />
-          <Sides />
+          {SHOW_SIDES_SECTION && <Sides />}
           <Testimonials />
           <Footer />
           <BackToTop />
