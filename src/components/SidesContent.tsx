@@ -48,12 +48,31 @@ export default function SidesContent({ items }: { items: Side[] }) {
             boxSizing: "border-box",
             display: "flex",
             flexDirection: "column",
-            gap: 16,
+            gap: 32,
             maxWidth: 720,
             width: "100%",
             marginInline: "auto",
           }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/svgs/sides-pixel-art.svg"
+            alt=""
+            aria-hidden
+            width={120}
+            height={120}
+            style={{ display: "block", flexShrink: 0 }}
+          />
+          <div
+            style={{
+              alignItems: "start",
+              alignSelf: "stretch",
+              boxSizing: "border-box",
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
           <div
             style={{
               boxSizing: "border-box",
@@ -100,6 +119,7 @@ export default function SidesContent({ items }: { items: Side[] }) {
               explorations and everything in-between. Feel free to reach me via
               email / Telegram or see more of my work on X(Twittter).
             </div>
+          </div>
           </div>
         </div>
 
