@@ -105,44 +105,54 @@ export default function CaseStudyContent({
           position: "relative",
           display: "flex",
           flexDirection: "column",
-          alignItems: "stretch",
-          gap: 48,
+          alignItems: "center",
           paddingBlock: "96px 48px",
-          paddingInline: "360px",
+          paddingInline: 24,
           flex: 1,
           fontSynthesis: "none",
           MozOsxFontSmoothing: "grayscale",
           WebkitFontSmoothing: "antialiased",
         }}
       >
-        <Hero data={data} />
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 720,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+            gap: 48,
+          }}
+        >
+          <Hero data={data} />
 
-        {intro.map((b, i) => (
-          <BlockRender key={`intro-${i}`} block={b} onOpenMedia={openMedia} />
-        ))}
+          {intro.map((b, i) => (
+            <BlockRender key={`intro-${i}`} block={b} onOpenMedia={openMedia} />
+          ))}
 
-        {sections.map((section) =>
-          section.source === "callout" ? (
-            <section
-              key={section.id}
-              id={section.id}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-                scrollMarginTop: 120,
-              }}
-            >
-              {renderBlocks(section.body, openMedia)}
-            </section>
-          ) : (
-            <SectionWrapper key={section.id} id={section.id} title={section.title}>
-              {renderBlocks(section.body, openMedia)}
-            </SectionWrapper>
-          ),
-        )}
+          {sections.map((section) =>
+            section.source === "callout" ? (
+              <section
+                key={section.id}
+                id={section.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 8,
+                  scrollMarginTop: 120,
+                }}
+              >
+                {renderBlocks(section.body, openMedia)}
+              </section>
+            ) : (
+              <SectionWrapper key={section.id} id={section.id} title={section.title}>
+                {renderBlocks(section.body, openMedia)}
+              </SectionWrapper>
+            ),
+          )}
 
-        {others.length > 0 && <NextProjects items={others} />}
+          {others.length > 0 && <NextProjects items={others} />}
+        </div>
       </main>
 
       <Footer />
