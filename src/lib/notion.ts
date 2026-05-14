@@ -249,6 +249,7 @@ export type WorkSummary = {
   team: string;
   tags: string[];
   cover: string | null;
+  website: string | null;
 };
 
 export type WorkDetail = WorkSummary & {
@@ -371,6 +372,10 @@ function rowToSummary(row: { id: string; properties: Record<string, unknown> }):
     team: getRichText(findProp(props, "Team")),
     tags: getMultiSelect(findProp(props, "Tags")),
     cover: cover ? encodeUrl(cover) : null,
+    website:
+      getUrl(findProp(props, "Website")) ||
+      getRichText(findProp(props, "Website")).trim() ||
+      null,
   };
 }
 

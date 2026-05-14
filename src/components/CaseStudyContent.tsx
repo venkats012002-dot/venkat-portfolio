@@ -197,15 +197,43 @@ function Hero({ data }: { data: WorkDetail }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <h1
           style={{
+            alignItems: "center",
             color: "var(--color-neutral-dark)",
+            display: "flex",
             fontFamily: "var(--font-heading)",
             fontSize: 22,
             fontWeight: 500,
+            gap: 8,
             lineHeight: "180%",
             margin: 0,
           }}
         >
           {data.title}
+          {data.website && (
+            <a
+              href={data.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Visit ${data.title} website`}
+              style={{
+                color: "currentColor",
+                display: "inline-flex",
+                flexShrink: 0,
+                lineHeight: 0,
+                textDecoration: "none",
+              }}
+            >
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+                <path fillRule="evenodd" clipRule="evenodd" d="M15.556 4.242L4.242 15.556L5.656 16.97L16.97 5.656L15.556 4.242Z" fill="currentColor" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M12.727 4.242L11.313 5.656L12.727 7.071L14.142 5.656L12.727 4.242Z" fill="currentColor" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M15.556 7.071L14.142 8.485L15.556 9.899L16.97 8.485L15.556 7.071Z" fill="currentColor" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M9.899 4.242L8.485 5.656L9.899 7.071L11.314 5.656L9.899 4.242Z" fill="currentColor" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M15.556 9.899L14.142 11.313L15.556 12.727L16.97 11.313L15.556 9.899Z" fill="currentColor" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M7.071 4.242L5.657 5.656L7.071 7.071L8.486 5.656L7.071 4.242Z" fill="currentColor" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M15.556 12.727L14.142 14.142L15.556 15.556L16.97 14.142L15.556 12.727Z" fill="currentColor" />
+              </svg>
+            </a>
+          )}
         </h1>
         <div className="case-study-meta" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {(data.role || data.timeline) && (
