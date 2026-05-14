@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import MobileNavWithSidebar from "@/components/MobileNavWithSidebar";
 import Footer from "@/components/Footer";
 import HiddenFooter from "@/components/HiddenFooter";
@@ -115,15 +116,24 @@ export default function SidesContent({ items }: { items: Side[] }) {
           ) : (
             <div
               style={{
-                color: "var(--color-neutral-dark)",
-                fontFamily: "var(--font-heading)",
-                fontSize: 18,
-                fontWeight: 500,
-                lineHeight: "180%",
+                alignSelf: "stretch",
+                color: "var(--color-neutral-7)",
+                fontFamily: "var(--font-body)",
+                fontSize: 14,
+                lineHeight: "21px",
                 paddingBlock: 32,
               }}
             >
-              Coming Soon
+              Coming Soon... Take a walk through{" "}
+              <Link
+                href="/personal-archive"
+                style={{
+                  color: "var(--color-neutral-dark)",
+                  textDecoration: "underline",
+                }}
+              >
+                Personal Archive
+              </Link>
             </div>
           )}
         </div>
