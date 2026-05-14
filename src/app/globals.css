@@ -170,9 +170,9 @@
     min-height: calc(100dvh - 72px) !important;
   }
 
-  /* 8px outer page margin on mobile + clip any sub-pixel horizontal overflow */
+  /* 16px outer page margin on mobile + clip any sub-pixel horizontal overflow */
   [data-scroll-container] {
-    padding-inline: 8px;
+    padding-inline: 16px;
     overflow-x: clip;
   }
   body {
@@ -308,6 +308,22 @@
     padding-block: 96px 48px !important;
     padding-inline: 16px !important;
     gap: 48px !important;
+  }
+
+  /* Case-study Hero meta: Role/Timeline + Stats/Team rows stack vertically
+     so each label sits on its own line instead of squeezing two per row. */
+  .case-study-meta-row {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 8px;
+  }
+
+  /* Case-study back arrow on mobile (sidebar hosting the desktop one is
+     hidden at this breakpoint). Non-sticky — sits at the top of the body
+     and scrolls with the content. */
+  .case-study-back-mobile {
+    display: inline-flex !important;
+    align-self: flex-start;
   }
 
   /* Testimonials: any inline fixed-width child collapses to fill the section */

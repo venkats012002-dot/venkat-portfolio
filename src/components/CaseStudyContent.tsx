@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import Footer from "./Footer";
 import PlayButton from "./PlayButton";
 import Separator from "./Separator";
@@ -131,6 +132,27 @@ export default function CaseStudyContent({
             gap: 48,
           }}
         >
+          <Link
+            href="/"
+            aria-label="Back to home"
+            className="case-study-back-mobile"
+            style={{
+              display: "none",
+              color: "var(--color-neutral-dark)",
+              lineHeight: 0,
+              textDecoration: "none",
+            }}
+          >
+            <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+              <path fillRule="evenodd" clipRule="evenodd" d="M0 7.983H16V10.643H0V7.983Z" fill="currentColor" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M2 5.322H4V7.983H2V5.322Z" fill="currentColor" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M2 10.643H4V13.304H2V10.643Z" fill="currentColor" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M4 2.661H6V5.322H4V2.661Z" fill="currentColor" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M4 13.304H6V15.965H4V13.304Z" fill="currentColor" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M6 0H8V2.661H6V0Z" fill="currentColor" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M6 15.965H8V18.626H6V15.965Z" fill="currentColor" />
+            </svg>
+          </Link>
           <Hero data={data} />
 
           {intro.map((b, i) => (
@@ -185,15 +207,15 @@ function Hero({ data }: { data: WorkDetail }) {
         >
           {data.title}
         </h1>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div className="case-study-meta" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {(data.role || data.timeline) && (
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="case-study-meta-row" style={{ display: "flex", justifyContent: "space-between" }}>
               {data.role && <span style={metaStyle}>Role: {data.role}</span>}
               {data.timeline && <span style={metaStyle}>Timeline: {data.timeline}</span>}
             </div>
           )}
           {(data.stats || data.team) && (
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="case-study-meta-row" style={{ display: "flex", justifyContent: "space-between" }}>
               {data.stats && <span style={metaStyle}>Stats: {data.stats}</span>}
               {data.team && <span style={metaStyle}>Team: {data.team}</span>}
             </div>
@@ -286,12 +308,13 @@ function SectionWrapper({
 type OpenMedia = (src: string, type: "image" | "video") => void;
 
 // Walks the section body and injects an 8px spacer between a paragraph and a
-// following image/video so media has a visual breath after text.
+// following image/video/carousel so media has a visual breath after text.
 function renderBlocks(blocks: WorkBlock[], onOpenMedia: OpenMedia) {
   return blocks.map((b, i) => {
     const prev = i > 0 ? blocks[i - 1] : undefined;
     const needsSpacer =
-      prev?.type === "paragraph" && (b.type === "image" || b.type === "video");
+      prev?.type === "paragraph" &&
+      (b.type === "image" || b.type === "video" || isCarouselCallout(b));
     return (
       <Fragment key={i}>
         {needsSpacer && <div style={{ height: 8 }} />}
@@ -480,81 +503,88 @@ function Carousel({
 
   return (
     <div style={{ alignSelf: "stretch", display: "flex", flexDirection: "column", gap: 16 }}>
-      <div style={{ alignItems: "center", display: "flex", gap: 24 }}>
-        <CarouselArrow
-          side="left"
-          active={canPrev}
-          onClick={() => setIdx((i) => Math.max(0, i - 1))}
-        />
-        <div
-          onClick={() => onOpenMedia(current.src, current.type)}
-          style={{
-            aspectRatio: "16 / 9",
-            backgroundColor: "var(--color-neutral-3)",
-            cursor: "pointer",
-            flex: 1,
-            overflow: "clip",
-            position: "relative",
-          }}
-        >
-          {current.type === "image" ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={current.src}
-              src={current.src}
-              alt={current.caption || ""}
-              loading="lazy"
-              style={{
-                display: "block",
-                height: "100%",
-                objectFit: "cover",
-                width: "100%",
-              }}
-            />
-          ) : (
-            <video
-              key={current.src}
-              src={current.src}
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{
-                display: "block",
-                height: "100%",
-                objectFit: "cover",
-                width: "100%",
-              }}
-            />
-          )}
-        </div>
-        <CarouselArrow
-          side="right"
-          active={canNext}
-          onClick={() => setIdx((i) => Math.min(slides.length - 1, i + 1))}
-        />
+      <div
+        onClick={() => onOpenMedia(current.src, current.type)}
+        style={{
+          alignSelf: "stretch",
+          aspectRatio: "16 / 9",
+          backgroundColor: "var(--color-neutral-3)",
+          cursor: "pointer",
+          overflow: "clip",
+          position: "relative",
+        }}
+      >
+        {current.type === "image" ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={current.src}
+            src={current.src}
+            alt={current.caption || ""}
+            loading="lazy"
+            style={{
+              display: "block",
+              height: "100%",
+              objectFit: "cover",
+              width: "100%",
+            }}
+          />
+        ) : (
+          <video
+            key={current.src}
+            src={current.src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              display: "block",
+              height: "100%",
+              objectFit: "cover",
+              width: "100%",
+            }}
+          />
+        )}
       </div>
       {slides.length > 1 && (
-        <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={i === idx}
-              onClick={() => setIdx(i)}
-              style={{
-                background:
-                  i === idx ? "var(--color-neutral-dark)" : "var(--color-neutral-4)",
-                border: "none",
-                cursor: "pointer",
-                height: 8,
-                padding: 0,
-                transition: "background-color 0.2s ease",
-                width: 8,
-              }}
-            />
-          ))}
+        <div
+          style={{
+            alignItems: "center",
+            alignSelf: "stretch",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <CarouselArrow
+            side="left"
+            active={canPrev}
+            onClick={() => setIdx((i) => Math.max(0, i - 1))}
+          />
+          <div style={{ display: "flex", gap: 8 }}>
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === idx}
+                onClick={() => setIdx(i)}
+                style={{
+                  background:
+                    i === idx ? "var(--color-neutral-dark)" : "var(--color-neutral-4)",
+                  border: "none",
+                  cursor: "pointer",
+                  height: 8,
+                  padding: 0,
+                  transition: "background-color 0.2s ease",
+                  width: 8,
+                }}
+              />
+            ))}
+          </div>
+          <CarouselArrow
+            side="right"
+            active={canNext}
+            onClick={() => setIdx((i) => Math.min(slides.length - 1, i + 1))}
+          />
         </div>
       )}
     </div>
