@@ -130,6 +130,9 @@ export default function SidesContent({ items }: { items: Side[] }) {
                 style={{
                   color: "var(--color-neutral-dark)",
                   textDecoration: "underline",
+                  textDecorationStyle: "wavy",
+                  textDecorationColor: "var(--color-accent-main)",
+                  textUnderlineOffset: 4,
                 }}
               >
                 Personal Archive
