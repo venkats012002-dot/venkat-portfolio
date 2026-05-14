@@ -405,7 +405,8 @@
    Default applies to body and inherits down. State-specific overrides match
    inline `style={{ cursor: "..." }}` strings via attribute selectors with
    !important so they beat the inline value. ProjectCard's `cursor: "none"`
-   path is intentionally not overridden so the portal-cursor still shows. */
+   path is explicitly overridden to `none !important` (see further below) so
+   the pixel cursor disappears while the portal-cursor shows. */
 /* PNG sources are 48×48 (resized from the original 192×192 — Chrome on
    macOS silently falls back to the OS cursor when source dimensions
    exceed ~32–64 px, which was the cause of the flickering). Declared
@@ -468,6 +469,15 @@ select, summary,
   cursor: image-set(url("data:image/png;base64,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") 2x) 12 12, help !important;
 }
 
+/* Inline `cursor: none` (used by ProjectCard to hide the pixel cursor behind
+   the portal-cursor overlay) must beat the tag-level !important rules above
+   for `a` / `button`. Attribute-selector specificity (0,1,0) wins over tag
+   (0,0,1), both with !important. */
+[style*="cursor: none"],
+[style*="cursor:none"] {
+  cursor: none !important;
+}
+
 /* Children of cursor-overriding elements must inherit the parent's cursor.
    Without this, the universal `*` rule above sets `cursor: main` directly on
    every descendant, breaking inheritance from `<a>` / `<button>` and making the
@@ -484,7 +494,8 @@ select *, summary *, .music-knob *,
 [style*="cursor: wait"] *, [style*="cursor:wait"] *,
 [style*="cursor: progress"] *, [style*="cursor:progress"] *,
 [style*="cursor: help"] *, [style*="cursor:help"] *,
-[style*="cursor: default"] *, [style*="cursor:default"] * {
+[style*="cursor: default"] *, [style*="cursor:default"] *,
+[style*="cursor: none"] *, [style*="cursor:none"] * {
   cursor: inherit !important;
 }
 
