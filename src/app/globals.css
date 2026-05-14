@@ -202,6 +202,7 @@
   /* sections with their own paddingInline already reduced via vars; zero
      out the rest so they sit flush with the 8px container padding */
   [data-scroll-container] > #keyprojects,
+  [data-scroll-container] > #personal-softwares,
   [data-scroll-container] > section[data-section-index="2"],
   [data-scroll-container] > section[data-section-index="3"],
   [data-scroll-container] > footer {
@@ -545,6 +546,20 @@ select *, summary *, .music-knob *,
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+}
+
+/* ── Personal Softwares list (homepage section between KeyProjects and Testimonials) ── */
+.psoftw-item {
+  outline: 1px solid transparent;
+  transition: background-color 0.2s ease, outline-color 0.2s ease;
+}
+.psoftw-item:hover {
+  background-color: #E8E8E8;
+  outline-color: #101010;
+}
+/* Home scroller smooth-scrolls in-page anchor jumps (e.g. Hero status → #personal-softwares). */
+.home-cube-tilt {
+  scroll-behavior: smooth;
 }
 
 /* ── About frames marquee (mobile-only — rendered conditionally in AboutContent) ──

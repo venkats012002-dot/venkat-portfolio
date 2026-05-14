@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import Hero from "@/components/Hero";
 import KeyProjects, { type KeyProject } from "@/components/KeyProjects";
+import PersonalSoftwares from "@/components/PersonalSoftwares";
 import Sides from "@/components/Sides";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
@@ -68,6 +69,7 @@ export default function HomeClient({ projects }: { projects: KeyProject[] }) {
           <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
           <Hero />
           <KeyProjects projects={projects} />
+          <PersonalSoftwares />
           {SHOW_SIDES_SECTION && <Sides />}
           <Testimonials />
           <Footer />

@@ -61,7 +61,7 @@ const items: { color: string; content: React.ReactNode }[] = [
   {
     color: "#6BBD40",
     content: (
-      <>Into Art, Technology, Psychology &amp; Building <span style={mutedStyle}>personal softwares with AI</span></>
+      <>Into Art, Technology, Psychology &amp; Building <a href="#personal-softwares" style={{ ...mutedStyle, ...wavyStyle }}>personal softwares with AI</a></>
     ),
   },
   {
