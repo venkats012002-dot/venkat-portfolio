@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import Footer from "./Footer";
+import PlayButton from "./PlayButton";
 import Separator from "./Separator";
 import CaseStudySidebar, { type SidebarItem } from "./CaseStudySidebar";
 import MediaLightbox, { type LightboxMedia } from "./MediaLightbox";
@@ -133,15 +133,11 @@ export default function CaseStudyContent({
                 scrollMarginTop: 120,
               }}
             >
-              {section.body.map((b, i) => (
-                <BlockRender key={i} block={b} onOpenMedia={openMedia} />
-              ))}
+              {renderBlocks(section.body, openMedia)}
             </section>
           ) : (
             <SectionWrapper key={section.id} id={section.id} title={section.title}>
-              {section.body.map((b, i) => (
-                <BlockRender key={i} block={b} onOpenMedia={openMedia} />
-              ))}
+              {renderBlocks(section.body, openMedia)}
             </SectionWrapper>
           ),
         )}
@@ -272,6 +268,22 @@ function SectionWrapper({
 
 type OpenMedia = (src: string, type: "image" | "video") => void;
 
+// Walks the section body and injects an 8px spacer between a paragraph and a
+// following image/video so media has a visual breath after text.
+function renderBlocks(blocks: WorkBlock[], onOpenMedia: OpenMedia) {
+  return blocks.map((b, i) => {
+    const prev = i > 0 ? blocks[i - 1] : undefined;
+    const needsSpacer =
+      prev?.type === "paragraph" && (b.type === "image" || b.type === "video");
+    return (
+      <Fragment key={i}>
+        {needsSpacer && <div style={{ height: 8 }} />}
+        <BlockRender block={b} onOpenMedia={onOpenMedia} />
+      </Fragment>
+    );
+  });
+}
+
 function BlockRender({ block, onOpenMedia }: { block: WorkBlock; onOpenMedia: OpenMedia }) {
   switch (block.type) {
     case "heading_2":
@@ -301,13 +313,7 @@ function BlockRender({ block, onOpenMedia }: { block: WorkBlock; onOpenMedia: Op
     case "spacer":
       return <div style={{ height: 8 }} />;
     case "callout":
-      return (
-        <>
-          {block.children.map((b, i) => (
-            <BlockRender key={i} block={b} onOpenMedia={onOpenMedia} />
-          ))}
-        </>
-      );
+      return <>{renderBlocks(block.children, onOpenMedia)}</>;
     case "heading_1":
       return <SubHeading size={18}>{block.text}</SubHeading>;
     default:
@@ -399,60 +405,32 @@ function NextProjects({ items }: { items: WorkSummary[] }) {
   return (
     <section style={{ display: "flex", flexDirection: "column", gap: 48 }}>
       <Separator variant="primary" />
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {items.map((item) => (
-          <NextProjectLink key={item.id} item={item} />
-        ))}
+      <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+        <div
+          style={{
+            color: "var(--color-neutral-7)",
+            fontFamily: "var(--font-body)",
+            fontSize: 14,
+            lineHeight: "180%",
+          }}
+        >
+          If you like this, you&rsquo;ll also like:
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {items.map((item) => (
+            <NextProjectLink key={item.id} item={item} />
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
 function NextProjectLink({ item }: { item: WorkSummary }) {
-  const [hovered, setHovered] = useState(false);
   return (
-    <Link
-      href={`/work/${item.slug}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        paddingLeft: 8,
-        color: hovered ? "var(--color-neutral-dark)" : "var(--color-neutral-7)",
-        fontFamily: "var(--font-body)",
-        fontSize: 16,
-        lineHeight: "150%",
-        textDecoration: "none",
-        transition: "color 0.18s ease",
-        width: "fit-content",
-      }}
-    >
-      <ArrowIcon />
-      {item.title}
-    </Link>
-  );
-}
-
-function ArrowIcon() {
-  return (
-    <svg
-      width="16"
-      height="14"
-      viewBox="0 0 16 14"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ flexShrink: 0 }}
-    >
-      <path fillRule="evenodd" clipRule="evenodd" d="M16 6H0V8H16V6Z" fill="currentColor" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M14 4H12V6H14V4Z" fill="currentColor" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M14 8H12V10H14V8Z" fill="currentColor" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M12 2H10V4H12V2Z" fill="currentColor" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M12 10H10V12H12V10Z" fill="currentColor" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M10 0H8V2H10V0Z" fill="currentColor" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M10 12H8V14H10V12Z" fill="currentColor" />
-    </svg>
+    <div style={{ paddingLeft: 8 }}>
+      <PlayButton label={item.title} href={`/work/${item.slug}`} />
+    </div>
   );
 }
 
