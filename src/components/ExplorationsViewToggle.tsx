@@ -1,6 +1,6 @@
 "use client";
 
-export type ExplorationsView = "grid" | "gallery";
+export type ExplorationsView = "grid" | "gallery" | "canvas";
 
 export default function ExplorationsViewToggle({
   view,
@@ -20,6 +20,11 @@ export default function ExplorationsViewToggle({
     >
       <Option label="Grid" active={view === "grid"} onClick={() => onChange("grid")} />
       <Option label="Gallery" active={view === "gallery"} onClick={() => onChange("gallery")} />
+      <Option
+        label="Infinity Canvas"
+        active={view === "canvas"}
+        onClick={() => onChange("canvas")}
+      />
     </div>
   );
 }
