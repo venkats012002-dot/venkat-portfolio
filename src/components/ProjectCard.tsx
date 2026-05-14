@@ -76,13 +76,12 @@ export default function ProjectCard({ image, tags, title, description, href }: P
         aria-label={title}
         style={{
           alignSelf: "stretch",
-          height: "400px",
+          aspectRatio: "9 / 5",
           backgroundImage: `url(${image})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
           flexShrink: 0,
           overflow: "clip",
-          border: "1px solid #DDDDDD",
         }}
       />
       <div style={{ display: "flex", flexDirection: "column", alignSelf: "stretch", gap: "8px" }}>
