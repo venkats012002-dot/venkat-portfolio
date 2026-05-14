@@ -6,6 +6,11 @@ import HiddenFooter from "@/components/HiddenFooter";
 import SidesList from "@/components/SidesList";
 import type { Side } from "@/components/SideItem";
 
+// Visible in `next dev` so we can keep iterating on the real list locally;
+// replaced with a "Coming Soon" placeholder on every Vercel build until the
+// content is ready.
+const SIDES_PUBLISHED = process.env.NODE_ENV === "development";
+
 export default function SidesContent({ items }: { items: Side[] }) {
   return (
     <div
@@ -105,7 +110,22 @@ export default function SidesContent({ items }: { items: Side[] }) {
             marginInline: "auto",
           }}
         >
-          <SidesList items={items} />
+          {SIDES_PUBLISHED ? (
+            <SidesList items={items} />
+          ) : (
+            <div
+              style={{
+                color: "var(--color-neutral-dark)",
+                fontFamily: "var(--font-heading)",
+                fontSize: 18,
+                fontWeight: 500,
+                lineHeight: "180%",
+                paddingBlock: 32,
+              }}
+            >
+              Coming Soon
+            </div>
+          )}
         </div>
       </main>
 
