@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const STATES = ["Idle", "Sleepy", "Sleep"] as const;
 type StateName = typeof STATES[number];
@@ -13,7 +13,26 @@ const SLEEP_DELAY = 7000;
 
 export default function StickyWhit3fang() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
+  // false = tooltip centered above button; true = tooltip's right edge sits at
+  // button's right edge so the body extends to the left. Latched once we
+  // detect right-overflow; stays put on resize even if it would now fit.
+  const [alignLeft, setAlignLeft] = useState(false);
   const [hiddenForFooter, setHiddenForFooter] = useState(false);
+
+  useLayoutEffect(() => {
+    if (alignLeft) return;
+    const update = () => {
+      const tip = tooltipRef.current;
+      if (!tip) return;
+      const r = tip.getBoundingClientRect();
+      if (r.right > window.innerWidth - 8) setAlignLeft(true);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [alignLeft]);
 
   useEffect(() => {
     const scrollEl = document.querySelector<HTMLElement>("[data-scroll-container]");
@@ -116,9 +135,7 @@ export default function StickyWhit3fang() {
   }, []);
 
   return (
-    <button
-      type="button"
-      aria-label="whit3fang"
+    <div
       className="sticky-whit3fang"
       style={{
         position: "fixed",
@@ -126,17 +143,64 @@ export default function StickyWhit3fang() {
         bottom: "32px",
         width: DISPLAY_SIZE,
         height: DISPLAY_SIZE,
-        padding: 0,
-        border: "none",
-        background: "transparent",
-        cursor: "pointer",
         zIndex: 50,
         opacity: hiddenForFooter ? 0 : 1,
         pointerEvents: hiddenForFooter ? "none" : "auto",
         transition: "opacity 0.3s ease",
       }}
     >
-      <canvas ref={canvasRef} style={{ imageRendering: "pixelated", display: "block" }} />
-    </button>
+      <div
+        ref={tooltipRef}
+        aria-hidden={!hovered}
+        style={{
+          alignItems: "start",
+          backgroundColor: "#E8E8E8",
+          borderColor: "#101010",
+          borderStyle: "solid",
+          borderWidth: 1,
+          bottom: "calc(100% + 8px)",
+          boxSizing: "border-box",
+          color: "#101010",
+          display: "flex",
+          flexDirection: "column",
+          fontFamily: "var(--font-body)",
+          fontSize: 13,
+          gap: 6,
+          lineHeight: "180%",
+          opacity: hovered ? 1 : 0,
+          overflow: "clip",
+          paddingBlock: "8px",
+          paddingInline: "16px",
+          pointerEvents: "none",
+          position: "absolute",
+          transition: "opacity 0.15s ease",
+          whiteSpace: "nowrap",
+          ...(alignLeft
+            ? { right: 0 }
+            : { left: "50%", transform: "translateX(-50%)" }),
+        }}
+      >
+        Whit3fang AI coming soon
+      </div>
+      <button
+        type="button"
+        aria-label="whit3fang"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setHovered(true)}
+        onBlur={() => setHovered(false)}
+        style={{
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+          display: "block",
+          height: DISPLAY_SIZE,
+          padding: 0,
+          width: DISPLAY_SIZE,
+        }}
+      >
+        <canvas ref={canvasRef} style={{ imageRendering: "pixelated", display: "block" }} />
+      </button>
+    </div>
   );
 }
