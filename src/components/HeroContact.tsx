@@ -107,7 +107,7 @@ export default function HeroContact() {
 
       {/* Resume */}
       <div className="hero-contact-resume" style={{ paddingLeft: "8px" }}>
-        <PlayButton label="Resume" />
+        <PlayButton label="Resume" href="/resume.pdf" target="_blank" rel="noopener" />
       </div>
     </div>
   );

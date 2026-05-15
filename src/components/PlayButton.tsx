@@ -3,7 +3,17 @@
 import Link from "next/link";
 import { useState } from "react";
 
-export default function PlayButton({ label = "Play", href }: { label?: string; href?: string }) {
+export default function PlayButton({
+  label = "Play",
+  href,
+  target,
+  rel,
+}: {
+  label?: string;
+  href?: string;
+  target?: string;
+  rel?: string;
+}) {
   const [hovered, setHovered] = useState(false);
 
   const sharedStyle = {
@@ -71,6 +81,8 @@ export default function PlayButton({ label = "Play", href }: { label?: string; h
       {href ? (
         <Link
           href={href}
+          target={target}
+          rel={rel}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           style={sharedStyle}

@@ -145,16 +145,28 @@ export default function Footer() {
           </span>
         </button>
 
-        <FooterLink href="#">Resume</FooterLink>
+        <FooterLink href="/resume.pdf" target="_blank" rel="noopener">Resume</FooterLink>
       </div>
     </footer>
   );
 }
 
-function FooterLink({ href, children }: { href: string; children: string }) {
+function FooterLink({
+  href,
+  children,
+  target,
+  rel,
+}: {
+  href: string;
+  children: string;
+  target?: string;
+  rel?: string;
+}) {
   return (
     <a
       href={href}
+      target={target}
+      rel={rel}
       style={{
         color: "var(--color-neutral-dark)",
         fontFamily: "var(--font-body)",
