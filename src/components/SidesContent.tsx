@@ -26,6 +26,7 @@ export default function SidesContent({ items }: { items: Side[] }) {
       <MobileNavWithSidebar />
 
       <main
+        className="sides-main"
         style={{
           alignItems: "center",
           alignSelf: "stretch",

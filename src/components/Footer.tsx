@@ -59,6 +59,7 @@ export default function Footer() {
             fontFamily: "var(--font-body)",
             fontSize: "13px",
             lineHeight: "180%",
+            textAlign: "center",
           }}
         >
           {"\u201C He who has a why to live can bear almost any how \u201D"}

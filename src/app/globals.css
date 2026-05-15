@@ -310,6 +310,13 @@
     gap: 48px !important;
   }
 
+  /* /sides page mobile pass — same shell as /about */
+  .sides-main {
+    padding-block: 96px 48px !important;
+    padding-inline: 16px !important;
+    gap: 48px !important;
+  }
+
   /* Case-study Hero meta: Role/Timeline + Stats/Team rows stack vertically
      so each label sits on its own line instead of squeezing two per row. */
   .case-study-meta-row {
@@ -352,6 +359,9 @@
   .footer-bottom-row > *:nth-child(5) { order: 4; } /* About */
   .footer-bottom-row > *:nth-child(6) { order: 5; } /* Copy Mail Id */
   .footer-bottom-row > *:nth-child(7) { order: 6; } /* Resume */
+  /* Reset the desktop -56px horizontal margins applied to the socials block
+     (.footer-bottom-row > :nth-child(4)) — column layout doesn't need them. */
+  .footer-bottom-row > *:nth-child(4) { margin-inline: 0 !important; }
 
   /* Sidebar: full-screen drawer, no 3D tilt */
   .sidebar-drawer {
@@ -562,6 +572,14 @@ select *, summary *, .music-knob *,
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+}
+
+/* Footer bottom row: tighten the gap around the socials block on desktop.
+   Outer row uses gap: 72px, so a -56px horizontal margin on the 4th child
+   (the socials wrapper) closes that to 16px on both sides. Mobile applies
+   flex-direction: column so the negative side margins are inert. */
+.footer-bottom-row > :nth-child(4) {
+  margin-inline: -56px;
 }
 
 /* ── Personal Softwares list (homepage section between KeyProjects and Testimonials) ── */

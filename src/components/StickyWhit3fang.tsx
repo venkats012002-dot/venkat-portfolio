@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 const STATES = ["Idle", "Sleepy", "Sleep"] as const;
 type StateName = typeof STATES[number];
@@ -20,6 +21,13 @@ export default function StickyWhit3fang() {
   // detect right-overflow; stays put on resize even if it would now fit.
   const [alignLeft, setAlignLeft] = useState(false);
   const [hiddenForFooter, setHiddenForFooter] = useState(false);
+  // Portal target so `position: fixed` escapes `#page-translate`'s
+  // will-change-transform containing block and actually pins to the viewport.
+  // Without this, the element drifts as the mobile address bar collapses /
+  // expands (the containing block height changes but the element keeps its
+  // offset from its containing block, not the visible viewport).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useLayoutEffect(() => {
     if (alignLeft) return;
@@ -134,7 +142,9 @@ export default function StickyWhit3fang() {
     };
   }, []);
 
-  return (
+  if (!mounted) return null;
+
+  const node = (
     <div
       className="sticky-whit3fang"
       style={{
@@ -203,4 +213,6 @@ export default function StickyWhit3fang() {
       </button>
     </div>
   );
+
+  return createPortal(node, document.body);
 }
