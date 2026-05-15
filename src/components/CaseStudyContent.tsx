@@ -7,7 +7,7 @@ import PlayButton from "./PlayButton";
 import Separator from "./Separator";
 import CaseStudySidebar, { type SidebarItem } from "./CaseStudySidebar";
 import MediaLightbox, { type LightboxMedia } from "./MediaLightbox";
-import type { WorkBlock, WorkDetail, WorkSummary } from "@/lib/notion";
+import type { RichSpan, WorkBlock, WorkDetail, WorkSummary } from "@/lib/notion";
 
 const CAROUSEL_EMOJI = "🎠";
 
@@ -361,7 +361,7 @@ function BlockRender({ block, onOpenMedia }: { block: WorkBlock; onOpenMedia: Op
     case "heading_4":
       return <SubHeading size={14}>{block.text}</SubHeading>;
     case "paragraph":
-      return <Body>{block.text}</Body>;
+      return <Body><RichText spans={block.spans} /></Body>;
     case "image":
       return <ImageBlock src={block.src} caption={block.caption} onOpen={onOpenMedia} />;
     case "video":
@@ -373,11 +373,11 @@ function BlockRender({ block, onOpenMedia }: { block: WorkBlock; onOpenMedia: Op
         </div>
       );
     case "quote":
-      return <QuoteBlock>{block.text}</QuoteBlock>;
+      return <QuoteBlock><RichText spans={block.spans} /></QuoteBlock>;
     case "bullet":
-      return <Body>• {block.text}</Body>;
+      return <Body>• <RichText spans={block.spans} /></Body>;
     case "number":
-      return <Body>{block.text}</Body>;
+      return <Body><RichText spans={block.spans} /></Body>;
     case "spacer":
       return <div style={{ height: 8 }} />;
     case "callout":
@@ -390,6 +390,34 @@ function BlockRender({ block, onOpenMedia }: { block: WorkBlock; onOpenMedia: Op
     default:
       return null;
   }
+}
+
+function RichText({ spans }: { spans: RichSpan[] }) {
+  return (
+    <>
+      {spans.map((span, i) =>
+        span.href ? (
+          <a
+            key={i}
+            href={span.href}
+            target={/^https?:\/\//i.test(span.href) ? "_blank" : undefined}
+            rel={/^https?:\/\//i.test(span.href) ? "noopener noreferrer" : undefined}
+            style={{
+              color: "var(--color-neutral-dark)",
+              textDecorationLine: "underline",
+              textDecorationStyle: "wavy",
+              textDecorationColor: "var(--color-accent-main)",
+              textUnderlineOffset: 2,
+            }}
+          >
+            {span.text}
+          </a>
+        ) : (
+          <span key={i}>{span.text}</span>
+        ),
+      )}
+    </>
+  );
 }
 
 function Body({ children }: { children: React.ReactNode }) {

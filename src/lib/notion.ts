@@ -224,15 +224,17 @@ export async function fetchArchiveEntries(): Promise<ArchiveEntry[]> {
 
 const workDbId = process.env.NOTION_WORK_DB_ID;
 
+export type RichSpan = { text: string; href: string | null };
+
 export type WorkBlock =
   | { type: "heading_1" | "heading_2" | "heading_3" | "heading_4"; text: string }
-  | { type: "paragraph"; text: string }
+  | { type: "paragraph"; text: string; spans: RichSpan[] }
   | { type: "image"; src: string; caption: string }
   | { type: "video"; src: string }
   | { type: "divider" }
-  | { type: "quote"; text: string }
+  | { type: "quote"; text: string; spans: RichSpan[] }
   | { type: "callout"; text: string; emoji: string | null; children: WorkBlock[] }
-  | { type: "bullet" | "number"; text: string }
+  | { type: "bullet" | "number"; text: string; spans: RichSpan[] }
   | { type: "spacer" };
 
 export type WorkSummary = {
@@ -281,6 +283,14 @@ function richTextOf(rt: Array<{ plain_text: string }> | undefined): string {
   return rt?.map((t) => t.plain_text).join("") ?? "";
 }
 
+// Preserve link annotations from Notion's rich_text spans. `href` is set at
+// the span level whenever a portion of text has a link applied in Notion.
+function richSpansOf(
+  rt: Array<{ plain_text: string; href?: string | null }> | undefined,
+): RichSpan[] {
+  return rt?.map((t) => ({ text: t.plain_text, href: t.href ?? null })) ?? [];
+}
+
 // SDK's discriminated types are noisy; we treat the raw block as a loose
 // record and only read the fields we need.
 type RawBlock = { id: string; type: string; has_children: boolean; [k: string]: unknown };
@@ -292,7 +302,8 @@ async function mapBlock(raw: RawBlock): Promise<WorkBlock | null> {
     return { type: t, text: richTextOf(b[t]?.rich_text) };
   }
   if (t === "paragraph") {
-    const text = richTextOf(b.paragraph?.rich_text);
+    const rt = b.paragraph?.rich_text;
+    const text = richTextOf(rt);
     const trimmed = text.trim();
     if (!trimmed) return { type: "spacer" };
     if (/^https?:\/\//i.test(trimmed) && IMAGE_EXT_RE.test(trimmed)) {
@@ -301,7 +312,7 @@ async function mapBlock(raw: RawBlock): Promise<WorkBlock | null> {
     if (/^https?:\/\//i.test(trimmed) && VIDEO_EXT_RE.test(trimmed)) {
       return { type: "video", src: encodeUrl(trimmed) };
     }
-    return { type: "paragraph", text };
+    return { type: "paragraph", text, spans: richSpansOf(rt) };
   }
   if (t === "image") {
     const img = b.image as { external?: { url: string }; file?: { url: string }; caption?: Array<{ plain_text: string }> } | undefined;
@@ -316,7 +327,8 @@ async function mapBlock(raw: RawBlock): Promise<WorkBlock | null> {
   }
   if (t === "divider") return { type: "divider" };
   if (t === "quote") {
-    return { type: "quote", text: richTextOf(b.quote?.rich_text) };
+    const rt = b.quote?.rich_text;
+    return { type: "quote", text: richTextOf(rt), spans: richSpansOf(rt) };
   }
   if (t === "callout") {
     const data = b.callout as { rich_text?: Array<{ plain_text: string }>; icon?: { type?: string; emoji?: string } | null } | undefined;
@@ -326,10 +338,12 @@ async function mapBlock(raw: RawBlock): Promise<WorkBlock | null> {
     return { type: "callout", text, emoji, children };
   }
   if (t === "bulleted_list_item") {
-    return { type: "bullet", text: richTextOf(b.bulleted_list_item?.rich_text) };
+    const rt = b.bulleted_list_item?.rich_text;
+    return { type: "bullet", text: richTextOf(rt), spans: richSpansOf(rt) };
   }
   if (t === "numbered_list_item") {
-    return { type: "number", text: richTextOf(b.numbered_list_item?.rich_text) };
+    const rt = b.numbered_list_item?.rich_text;
+    return { type: "number", text: richTextOf(rt), spans: richSpansOf(rt) };
   }
   return null;
 }
