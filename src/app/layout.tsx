@@ -4,7 +4,7 @@ import AgentationRoot from "@/components/AgentationRoot";
 import GlobalChrome from "@/components/GlobalChrome";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://venkat-portfolio-ruby.vercel.app"),
+  metadataBase: new URL("https://www.heyvenk.at"),
   title: "Venkat - Portfolio",
   description: "Multi-disciplinary designer, artist and tinkerer",
   openGraph: {
