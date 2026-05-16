@@ -54,26 +54,6 @@ export default async function PersonalArchivePage() {
               <p style={paragraphStyle}>
                 I like to go on walks everyday and the best part about it was always the introspection and self talks I have on everything around me. They say the world is your canvas right. Not every thought I get might be appropriate to be shared on the internet, but most times I get thoughts on how everything around us has a story to convey and makes me wondering.
               </p>
-              <p style={paragraphStyle}>
-                This page is &ldquo;that&rdquo; place where in I just dump all my random thoughts, quirks, banter on everything being design, art, psychology and what not. If you relate even on the tiniest bit feel free to DM or reach out to me in my socials or email.
-              </p>
-              <p style={paragraphStyle}>
-                Built using Poke by Interaction → Notion DB → Here. This page was not my original idea and was inspired by a fellow designer&rsquo;s work -{" "}
-                <a
-                  href="https://adayinalife.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "inherit",
-                    textDecorationLine: "underline",
-                    textDecorationStyle: "wavy",
-                    textDecorationThickness: "0.5px",
-                    textUnderlineOffset: "2px",
-                  }}
-                >
-                  Living Log Book.
-                </a>
-              </p>
             </div>
           </div>
         </header>
